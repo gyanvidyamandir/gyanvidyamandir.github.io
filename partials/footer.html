@@ -1,17 +1,19 @@
-<footer class="footer">
+<footer class="footer" id="footer">
   <div class="container">
     <div class="footer__top">
+      <!-- LEFT: Brand / Info -->
       <div class="footer__brand">
         <a class="brand brand--footer" href="index.html">
           <img class="brand__logo" src="assets/img/logo.png" alt="Gyan Vidya Mandir logo" />
           <span class="footer__name notranslate">GYAN VIDYA MANDIR, WADI</span>
         </a>
 
-        <div class="footer__tag" data-i18n="footer.tag">
-          English-medium education in Wadi, Nagpur (Gramin) — focused on strong fundamentals, values, and student confidence.
-        </div>
+        <p class="footer__tag" data-i18n="footer.tag">
+          English-medium education in Wadi, Nagpur (Gramin) — focused on strong fundamentals, values, and student
+          confidence.
+        </p>
 
-        <div class="footer__address">
+        <div class="footer__meta">
           <p>
             <b data-i18n="footer.address_label">Address:</b>
             <span class="notranslate">37, Ate Layout, Khadgaon Road, Wadi, Nagpur – 440023</span>
@@ -28,22 +30,25 @@
           </p>
         </div>
 
-        <div class="footer__socials">
-          <a class="social-icon facebook" href="https://www.facebook.com/Gyanvidyamandir" target="_blank" aria-label="Facebook">
-            <img src="assets/img/facebook.svg" alt="Facebook">
+        <div class="footer__socials" aria-label="Social links">
+          <a class="social-icon facebook" href="https://www.facebook.com/Gyanvidyamandir" target="_blank" rel="noopener"
+            aria-label="Facebook">
+            <img src="assets/img/facebook.svg" alt="" />
           </a>
 
           <a class="social-icon email notranslate" href="mailto:info@gyanvidyamandir.in" aria-label="Email">
-            <img src="assets/img/email.svg" alt="Email">
+            <img src="assets/img/email.svg" alt="" />
           </a>
 
-          <a class="social-icon whatsapp" href="https://wa.me/919970160698" target="_blank" aria-label="WhatsApp">
-            <img src="assets/img/whatsapp.svg" alt="WhatsApp">
+          <a class="social-icon whatsapp" href="https://wa.me/919970160698" target="_blank" rel="noopener"
+            aria-label="WhatsApp">
+            <img src="assets/img/whatsapp.svg" alt="" />
           </a>
         </div>
       </div>
 
-      <div class="footer__cols">
+      <!-- RIGHT: Link columns -->
+      <div class="footer__cols" aria-label="Footer links">
         <div class="footer__col">
           <div class="footer__title" data-i18n="footer.school_title">School</div>
           <a href="about.html#overview" data-i18n="footer.school_about">About</a>
@@ -74,13 +79,11 @@
     </div>
 
     <div class="footer__bottom">
-      <div class="notranslate">
+      <div class="footer__copy notranslate">
         © <span id="year"></span> Gyan Vidya Mandir, Wadi
       </div>
 
-      <div class="footer__bottomLinks">
-        <a href="#top" data-i18n="footer.back_to_top">Back to top</a>
-      </div>
+      <a class="footer__toplink" href="#top" data-i18n="footer.back_to_top">Back to top</a>
     </div>
   </div>
 </footer>

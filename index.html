@@ -1,212 +1,392 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <link rel="icon" type="image/png" href="assets/img/favicon.svg">
   <title>Gyan Vidya Mandir, Wadi</title>
-  <meta name="description" content="English-medium, co-educational school in Wadi, Nagpur offering Nursery to Grade 10 education with strong foundational learning and values." />
+
+  <!-- Better SEO description (clear + specific) -->
+  <meta name="description"
+    content="Gyan Vidya Mandir, Wadi (Nagpur) is an English-medium, co-educational school from Nursery to Grade 10—focused on strong foundations, discipline, values, and safe, supportive learning." />
+
   <link rel="stylesheet" href="assets/css/styles.css" />
 </head>
+
 <body>
 
-<a class="skip-link" href="#main" data-i18n="global.skip">Skip to content</a>
+  <a class="skip-link" href="#main" data-i18n="global.skip">Skip to content</a>
 
-<div data-include="partials/header.html"></div>
+  <div data-include="partials/header.html"></div>
 
-<!-- News Ticker -->
-<div class="news-ticker" role="region" aria-label="School announcements">
-  <div class="news-ticker__inner">
-    <div class="news-ticker__track">
-      <div class="news-ticker__item notranslate" data-i18n="ticker.item1">
-        Admissions open for Nursery to Grade 10 • Enroll for Academic Year 2025–26
-      </div>
-      <div class="news-ticker__item" data-i18n="ticker.item2">
-        Limited seats available • Contact school office for details
-      </div>
-      <div class="news-ticker__item" data-i18n="ticker.item3">
-        English-medium • Co-educational • Strong foundations & discipline
+  <!-- News Ticker -->
+  <div class="news-ticker" role="region" aria-label="School announcements">
+    <div class="news-ticker__inner">
+      <div class="news-ticker__track">
+        <div class="news-ticker__item notranslate" data-i18n="ticker.item1">
+          Admissions open for Nursery to Grade 10 • Enroll for Academic Year 2025–26
+        </div>
+        <div class="news-ticker__item" data-i18n="ticker.item2">
+          Limited seats available • Visit the office for schedule & documents
+        </div>
+        <div class="news-ticker__item" data-i18n="ticker.item3">
+          English-medium • Co-educational • Strong basics + values + discipline
+        </div>
+        <div class="news-ticker__item" data-i18n="ticker.item4">
+          Regular assessments • Parent updates • Practice-first learning
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<main id="main">
-  <section class="hero">
-    <div class="container">
-      <div class="hero__grid">
-        <!-- Left content -->
-        <div>
-          <div class="eyebrow notranslate" data-i18n="home.eyebrow">
-            English-medium • Co-educational • Nursery to Grade 10
+  <main id="main">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero__grid">
+
+          <!-- Left content -->
+          <div>
+            <div class="eyebrow notranslate" data-i18n="home.eyebrow">
+              English-medium • Co-educational • Nursery to Grade 10
+            </div>
+
+            <h1 class="hero__title" data-i18n="home.hero_title">
+              Strong foundations. Confident futures.
+            </h1>
+
+            <p class="hero__sub" data-i18n="home.hero_sub">
+              At Gyan Vidya Mandir, we build strong basics in reading, writing, and mathematics—so students learn with
+              clarity and confidence.
+              We support every child with structured teaching, regular practice, and values that shape discipline,
+              respect, and responsibility.
+            </p>
+
+            <!-- New: quick trust highlights -->
+            <div class="chips reveal" aria-label="Key highlights">
+              <span data-i18n="home.chip1">Safe & supportive campus</span>
+              <span data-i18n="home.chip2">Practice-first learning</span>
+              <span data-i18n="home.chip3">Regular assessments</span>
+              <span data-i18n="home.chip4">Parent communication</span>
+            </div>
+
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="enroll.html" data-i18n="home.cta_enroll">Enroll Today</a>
+              <a class="btn btn--ghost" href="about.html#overview" data-i18n="home.cta_learn">Learn More</a>
+            </div>
           </div>
 
-          <h1 class="hero__title" data-i18n="home.hero_title">Strong foundations. Confident futures.</h1>
+          <!-- Right media: carousel -->
+          <div class="hero__media" aria-label="School highlights">
+            <div class="carousel--hero" data-carousel>
+              <div class="carousel__track" data-carousel-track>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide1.jpg')"
+                  aria-label="Classroom learning"></div>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide2.jpg')"
+                  aria-label="Campus and activities"></div>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide3.jpg')"
+                  aria-label="Students participating"></div>
+              </div>
 
-          <p class="hero__sub" data-i18n="home.hero_sub">
-            Our mission is to provide strong foundational learning through English-medium, co-educational education in a safe and supportive environment. We focus on academic clarity, discipline, and values—nurturing confident students who are well prepared for the next stage of education and life beyond the classroom.
+              <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Previous slide"
+                data-carousel-prev>‹</button>
+              <button class="carousel__btn carousel__btn--next" type="button" aria-label="Next slide"
+                data-carousel-next>›</button>
+
+              <div class="carousel__dots" data-carousel-dots aria-label="Carousel dots"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="section section--tint">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="home.why_title">Why families choose us</h2>
+          <p class="section__sub" data-i18n="home.why_sub">
+            A balanced approach to academics, discipline, and student well-being—built for consistent learning outcomes.
           </p>
+        </div>
 
-          <div class="hero__actions">
-            <a class="btn btn--primary" href="enroll.html" data-i18n="home.cta_enroll">Enroll Today</a>
-            <a class="btn btn--ghost" href="about.html#overview" data-i18n="home.cta_learn">Learn More</a>
+        <div class="grid grid--3">
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why1_title">English-medium learning</h3>
+            <p class="card__text" data-i18n="home.why1_text">
+              Clear instruction, speaking practice, and daily reading habits—so students build confidence step by step.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why2_title">Strong discipline & values</h3>
+            <p class="card__text" data-i18n="home.why2_text">
+              Respect, punctuality, cleanliness, and responsibility—simple habits that support good learning and
+              character.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why3_title">Concept clarity first</h3>
+            <p class="card__text" data-i18n="home.why3_text">
+              Focus on fundamentals in Maths, Science, and Language with revision, worksheets, and doubt-solving
+              support.
+            </p>
+          </div>
+
+          <!-- New row (more detail) -->
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why4_title">Regular assessments</h3>
+            <p class="card__text" data-i18n="home.why4_text">
+              Frequent checks help students stay on track and help parents see progress clearly—not just at year-end.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why5_title">Supportive teachers</h3>
+            <p class="card__text" data-i18n="home.why5_text">
+              Patient guidance, practice routines, and encouragement—especially for students who need extra attention.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.why6_title">Balanced development</h3>
+            <p class="card__text" data-i18n="home.why6_text">
+              Activities, sports, and teamwork—so students grow with confidence, communication, and healthy routines.
+            </p>
           </div>
         </div>
 
-        <!-- Right media: carousel -->
-        <div class="hero__media" aria-label="School highlights">
-          <div class="carousel--hero" data-carousel>
-            <div class="carousel__track" data-carousel-track>
-              <!-- Slides will be inserted by JS (or you can hardcode backgrounds) -->
-              <div class="carousel__slide" style="background-image:url('assets/img/slide1.jpg')"></div>
-              <div class="carousel__slide" style="background-image:url('assets/img/slide2.jpg')"></div>
-              <div class="carousel__slide" style="background-image:url('assets/img/slide3.jpg')"></div>
+        <!-- New: a small callout strip -->
+        <div class="cta-strip" style="margin-top:18px;">
+          <div>
+            <h3 class="cta-strip__title" data-i18n="home.callout_title">Looking for a school that focuses on basics?
+            </h3>
+            <p class="cta-strip__text" data-i18n="home.callout_text">
+              Book a short visit—see classrooms, talk to staff, and understand the admission process.
+            </p>
+          </div>
+          <div class="cta-strip__actions">
+            <a class="btn btn--primary" href="contact.html" data-i18n="home.callout_btn1">Schedule a visit</a>
+            <a class="btn btn--ghost" href="admissions.html#how" data-i18n="home.callout_btn2">How admissions work</a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CAMPUS & RESOURCES (kept as your “full page” section, but more detailed) -->
+    <section class="section">
+      <div class="container">
+        <div class="band">
+          <div class="band__media" style="background-image:url('assets/img/campus.jpg')" aria-label="Campus"></div>
+
+          <div class="band__copy">
+            <div class="eyebrow" data-i18n="home.campus_eyebrow">Campus & learning resources</div>
+            <h2 class="band__title" data-i18n="home.campus_title">A supportive place to learn</h2>
+
+            <p class="band__text" data-i18n="home.campus_text">
+              We keep the campus simple, clean, and learning-focused. Students get structured classroom teaching,
+              reading support,
+              basic digital exposure, and space for sports—so learning stays consistent and confidence grows.
+            </p>
+
+            <div class="features" aria-label="Facilities highlights">
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">🏫</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac1_title">Classrooms</div>
+                  <div class="feature__text" data-i18n="home.fac1_text">
+                    Well-managed learning spaces with daily practice and teacher guidance.
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">💻</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac2_title">Computers</div>
+                  <div class="feature__text" data-i18n="home.fac2_text">
+                    Basic computer skills and guided learning tasks to build confidence with technology.
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">📚</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac3_title">Library & reading</div>
+                  <div class="feature__text" data-i18n="home.fac3_text">
+                    Reading time for vocabulary, comprehension, and curiosity beyond textbooks.
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">⚽</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac4_title">Playground</div>
+                  <div class="feature__text" data-i18n="home.fac4_text">
+                    Sports and movement for fitness, teamwork, and positive daily routines.
+                  </div>
+                </div>
+              </div>
+
+              <!-- New: two more features -->
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">🧪</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac5_title">Learning activities</div>
+                  <div class="feature__text" data-i18n="home.fac5_text">
+                    Simple activities that improve observation, communication, and confidence.
+                  </div>
+                </div>
+              </div>
+
+              <div class="feature">
+                <span class="feature__icon" aria-hidden="true">🛡️</span>
+                <div class="feature__body">
+                  <div class="feature__title" data-i18n="home.fac6_title">Student safety</div>
+                  <div class="feature__text" data-i18n="home.fac6_text">
+                    A calm environment with clear rules and staff supervision.
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Previous slide" data-carousel-prev>‹</button>
-            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Next slide" data-carousel-next>›</button>
+            <div class="mini-cards">
+              <div class="mini-card">
+                <div class="mini-card__top">
+                  <span class="mini-card__icon" aria-hidden="true">💧</span>
+                  <div class="mini-card__title" data-i18n="home.mini1_title">Safe & clean</div>
+                </div>
+                <div class="mini-card__text" data-i18n="home.mini1_text">Hygiene routines and safe drinking water.</div>
+              </div>
 
-            <div class="carousel__dots" data-carousel-dots aria-label="Carousel dots"></div>
+              <div class="mini-card">
+                <div class="mini-card__top">
+                  <span class="mini-card__icon" aria-hidden="true">🧠</span>
+                  <div class="mini-card__title" data-i18n="home.mini2_title">Learning support</div>
+                </div>
+                <div class="mini-card__text" data-i18n="home.mini2_text">Reading + revision + doubt solving.</div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-card__top">
+                  <span class="mini-card__icon" aria-hidden="true">🌱</span>
+                  <div class="mini-card__title" data-i18n="home.mini3_title">Student growth</div>
+                </div>
+                <div class="mini-card__text" data-i18n="home.mini3_text">Academics, values, and confidence-building.
+                </div>
+              </div>
+            </div>
+
+            <div class="band__actions">
+              <a class="btn btn--primary btn--small" href="about.html#campus" data-i18n="home.campus_btn">Explore
+                facilities</a>
+              <a class="btn btn--small" href="about.html#academics" data-i18n="home.campus_btn2">See academics</a>
+            </div>
           </div>
+
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section section--tint">
-    <div class="container">
-      <div class="section__head">
-        <h2 class="section__title" data-i18n="home.why_title">Why families choose us</h2>
-        <p class="section__sub" data-i18n="home.why_sub">
-          A balanced approach to academics, discipline, and student well-being—built for consistent learning outcomes.
-        </p>
-      </div>
-
-      <div class="grid grid--3">
-        <div class="card">
-          <h3 class="card__title" data-i18n="home.why1_title">English-medium learning</h3>
-          <p class="card__text" data-i18n="home.why1_text">Clear instruction, strong basics, and regular practice to build language confidence.</p>
-        </div>
-
-        <div class="card">
-          <h3 class="card__title" data-i18n="home.why2_title">Co-educational environment</h3>
-          <p class="card__text" data-i18n="home.why2_text">An inclusive setting that encourages respect, collaboration, and healthy social growth.</p>
-        </div>
-
-        <div class="card">
-          <h3 class="card__title" data-i18n="home.why3_title">Foundational strength</h3>
-          <p class="card__text" data-i18n="home.why3_text">Concept clarity, discipline, and values that support long-term academic and life success.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="band">
-        <div class="band__media" style="background-image:url('assets/img/campus.jpg')" aria-label="Campus"></div>
-
-        <div class="band__copy">
-          <div class="eyebrow" data-i18n="home.campus_eyebrow">Campus & learning resources</div>
-          <h2 class="band__title" data-i18n="home.campus_title">A supportive place to learn</h2>
-
-          <p class="band__text" data-i18n="home.campus_text">
-            Our campus supports focused learning and confident growth—with well-maintained classrooms, digital practice,
-            reading support, safe drinking water, and outdoor play.
+    <!-- New: PROGRAMS / GRADES -->
+    <section class="section section--tint">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="home.programs_title">Programs & grade levels</h2>
+          <p class="section__sub" data-i18n="home.programs_sub">
+            Clear learning goals at every stage—so children grow step by step.
           </p>
+        </div>
 
-          <!-- Feature list with icons -->
-          <div class="features" aria-label="Facilities highlights">
-            <div class="feature">
-              <span class="feature__icon" aria-hidden="true">🏫</span>
-              <div class="feature__body">
-                <div class="feature__title" data-i18n="home.fac1_title">Classrooms</div>
-                <div class="feature__text" data-i18n="home.fac1_text">Clean, structured spaces for concept clarity and daily practice.</div>
-              </div>
-            </div>
-
-            <div class="feature">
-              <span class="feature__icon" aria-hidden="true">💻</span>
-              <div class="feature__body">
-                <div class="feature__title" data-i18n="home.fac2_title">Computers</div>
-                <div class="feature__text" data-i18n="home.fac2_text">Basic digital skills, assignments, and guided learning support.</div>
-              </div>
-            </div>
-
-            <div class="feature">
-              <span class="feature__icon" aria-hidden="true">📚</span>
-              <div class="feature__body">
-                <div class="feature__title" data-i18n="home.fac3_title">Library</div>
-                <div class="feature__text" data-i18n="home.fac3_text">Reading time, vocabulary growth, and learning beyond textbooks.</div>
-              </div>
-            </div>
-
-            <div class="feature">
-              <span class="feature__icon" aria-hidden="true">⚽</span>
-              <div class="feature__body">
-                <div class="feature__title" data-i18n="home.fac4_title">Playground</div>
-                <div class="feature__text" data-i18n="home.fac4_text">Sports, teamwork, movement, and healthy routines.</div>
-              </div>
-            </div>
+        <div class="grid grid--3">
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.prog1_title">Nursery & Kindergarten</h3>
+            <p class="card__text" data-i18n="home.prog1_text">
+              Phonics, early writing, numbers, and good habits—through fun, structured activities.
+            </p>
           </div>
 
-          <!-- Mini cards row -->
-          <div class="mini-cards">
-            <div class="mini-card">
-              <div class="mini-card__top">
-                <span class="mini-card__icon" aria-hidden="true">💧</span>
-                <div class="mini-card__title" data-i18n="home.mini1_title">Safe & Clean</div>
-              </div>
-              <div class="mini-card__text" data-i18n="home.mini1_text">Hygiene and drinking water prioritised.</div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-card__top">
-                <span class="mini-card__icon" aria-hidden="true">🧠</span>
-                <div class="mini-card__title" data-i18n="home.mini2_title">Learning Support</div>
-              </div>
-              <div class="mini-card__text" data-i18n="home.mini2_text">Reading + practice-first approach.</div>
-            </div>
-
-            <div class="mini-card">
-              <div class="mini-card__top">
-                <span class="mini-card__icon" aria-hidden="true">🌱</span>
-                <div class="mini-card__title" data-i18n="home.mini3_title">Student Growth</div>
-              </div>
-              <div class="mini-card__text" data-i18n="home.mini3_text">Academics, values, and discipline.</div>
-            </div>
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.prog2_title">Primary (Grades 1–5)</h3>
+            <p class="card__text" data-i18n="home.prog2_text">
+              Strong basics in English, Maths, and Science with worksheets, reading practice, and concept clarity.
+            </p>
           </div>
 
-          <div class="band__actions">
-            <a class="btn btn--primary btn--small" href="about.html#campus" data-i18n="home.campus_btn">Explore facilities</a>
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.prog3_title">Middle & Secondary (Grades 6–10)</h3>
+            <p class="card__text" data-i18n="home.prog3_text">
+              Deeper subject understanding, regular revision, and exam preparation with guidance and discipline.
+            </p>
+          </div>
+        </div>
+
+        <div class="band__actions" style="margin-top:16px;">
+          <a class="btn btn--primary" href="admissions.html#how" data-i18n="home.programs_btn1">Admissions process</a>
+          <a class="btn btn--ghost" href="about.html#overview" data-i18n="home.programs_btn2">About the school</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- New: PARENTS / FAQ PREVIEW -->
+    <section class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2 class="section__title" data-i18n="home.parents_title">For parents</h2>
+          <p class="section__sub" data-i18n="home.parents_sub">
+            Simple, clear information—so you can decide with confidence.
+          </p>
+        </div>
+
+        <div class="grid grid--3">
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.parents1_title">What you can expect</h3>
+            <p class="card__text" data-i18n="home.parents1_text">
+              Regular practice, discipline, and teacher guidance—focused on learning outcomes and confidence.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.parents2_title">How we communicate</h3>
+            <p class="card__text" data-i18n="home.parents2_text">
+              Updates on attendance, progress, and important notices—so parents stay informed.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 class="card__title" data-i18n="home.parents3_title">Need help choosing a grade?</h3>
+            <p class="card__text" data-i18n="home.parents3_text">
+              Visit the school office or contact us—our team will guide you through the right steps.
+            </p>
+          </div>
+        </div>
+
+        <div class="cta-strip" style="margin-top:18px;">
+          
+          <div class="cta-strip__actions">
+            <a class="btn btn--primary" href="enroll.html" data-i18n="home.ready_btn1">Enroll Today</a>
+            <a class="btn btn--ghost" href="admissions.html#how" data-i18n="home.ready_btn2">Admissions Info</a>
           </div>
         </div>
 
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section section--tight">
-    <div class="container">
-      <div class="cta-strip">
-        <div>
-          <h3 class="cta-strip__title" data-i18n="home.ready_title">Ready to enroll?</h3>
-          <p class="cta-strip__text" data-i18n="home.ready_text">Start the admission inquiry for Nursery to Grade 10 in a few minutes.</p>
-        </div>
-        <div class="cta-strip__actions">
-          <a class="btn btn--primary" href="enroll.html" data-i18n="home.ready_btn1">Enroll Today</a>
-          <a class="btn btn--ghost" href="admissions.html#how" data-i18n="home.ready_btn2">Admissions Info</a>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+  </main>
 
-<div data-include="partials/footer.html"></div>
+  <div data-include="partials/footer.html"></div>
 
-<script src="assets/js/app.js"></script>
-<script src="assets/js/gt.js"></script>
-<script src="assets/js/i18n.js"></script>
-<script src="assets/js/forms.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/gt.js"></script>
+  <script src="assets/js/i18n.js"></script>
+  <script src="assets/js/forms.js"></script>
 </body>
+
 </html>

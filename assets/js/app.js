@@ -6,6 +6,7 @@
    - Desktop dropdowns via CSS hover (no JS interference)
    - Footer year
    - Hero carousel (from assets/data/photos.json)
+   - Language segmented toggle (safe init after partials load)
    NOTE: Formspree + flash messages are handled in assets/js/forms.js
 ========================================================= */
 
@@ -77,6 +78,48 @@
     const y = document.getElementById("year");
     if (y) y.textContent = String(new Date().getFullYear());
   }
+
+  /* =========================
+   Language segmented toggle
+   - works with i18n.js (window.GVM_I18N)
+   - runs AFTER partials load
+========================= */
+  function initLangToggle() {
+    const btns = document.querySelectorAll(".lang-seg__btn");
+    if (!btns.length) return;
+
+    const setActiveUI = (lang) => {
+      btns.forEach((b) => {
+        const isActive = (b.getAttribute("data-lang") || "").toLowerCase() === lang;
+        b.classList.toggle("is-active", isActive);
+        b.setAttribute("aria-selected", String(isActive));
+      });
+    };
+
+    // initial active state (from storage)
+    const saved = (localStorage.getItem("gvm_lang") || "en").toLowerCase();
+    setActiveUI(saved);
+
+    btns.forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const lang = (btn.getAttribute("data-lang") || "en").toLowerCase();
+
+        // UI highlight immediately
+        setActiveUI(lang);
+
+        // ✅ call your i18n controller
+        if (window.GVM_I18N && typeof window.GVM_I18N.setLang === "function") {
+          await window.GVM_I18N.setLang(lang);
+        } else {
+          // fallback: at least persist
+          localStorage.setItem("gvm_lang", lang);
+          // if EN, safest restore is a reload (optional)
+          if (lang === "en") location.reload();
+        }
+      });
+    });
+  }
+
 
   /* =========================
      Carousel (assets/data/photos.json)
@@ -161,7 +204,9 @@
     btnPrev?.addEventListener("click", prev);
 
     // Pause on hover (desktop)
-    root.addEventListener("mouseenter", () => timer && clearInterval(timer));
+    root.addEventListener("mouseenter", () => {
+      if (timer) clearInterval(timer);
+    });
     root.addEventListener("mouseleave", restart);
 
     render();
@@ -182,6 +227,7 @@
     // Init after DOM is stable
     initNav();
     initYear();
+    initLangToggle();
     await initCarouselFromJSON();
     // Forms are handled in assets/js/forms.js
   });

@@ -79,14 +79,11 @@
         </div>
 
         <div class="nav__right">
-          <div class="lang-toggle">
-  <button type="button" onclick="GVM_I18N.setLang('en')">EN</button>
-  <span>•</span>
-  <button type="button" onclick="GVM_I18N.setLang('hi')">हिंदी</button>
-  <span>•</span>
-  <button type="button" onclick="GVM_I18N.setLang('mr')">मराठी</button>
-</div>
-
+          <div class="lang-seg" role="tablist" aria-label="Language">
+            <button class="lang-seg__btn is-active" data-lang="en" role="tab" aria-selected="true">EN</button>
+            <button class="lang-seg__btn" data-lang="hi" role="tab" aria-selected="false">हिंदी</button>
+            <button class="lang-seg__btn" data-lang="mr" role="tab" aria-selected="false">मराठी</button>
+          </div>          
 
           <a class="btn btn--primary btn--small" href="contact.html" data-i18n="nav.contact">Contact Us</a>
         </div>
