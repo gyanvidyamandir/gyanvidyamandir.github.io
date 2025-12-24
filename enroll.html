@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.svg">
+  <title>Enroll Today • Gyan Vidya Mandir</title>
+  <meta name="description" content="Enrollment inquiry form for Nursery to Grade 10." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<div data-include="partials/header.html"></div>
+
+<!-- Flash messages mount -->
+<div class="flash-wrap" aria-live="polite" aria-atomic="true"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title" data-i18n="enroll.hero_title">Enroll Today</h1>
+      <p class="page-hero__sub" data-i18n="enroll.hero_sub">
+        Submit an admission inquiry for Nursery to Grade 10. We’ll contact you with the next steps.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2">
+
+        <!-- LEFT: Student -->
+        <div class="card">
+          <h2 class="card__title" data-i18n="enroll.student_title">Student information</h2>
+
+          <form class="form js-form notranslate"
+                id="enrollForm"
+                method="POST"
+                data-endpoint="https://formspree.io/f/mlgrllzb"
+                data-subject="New Enrollment Inquiry"
+                data-form-name="Enrollment Inquiry">
+
+            <!-- Hidden context -->
+            <input type="hidden" name="formType" value="Enrollment Inquiry" />
+            <input type="hidden" name="page" value="enroll.html" />
+
+            <label class="sr-only" for="studentName" data-i18n="enroll.student_name_label">Student Name</label>
+            <input class="input"
+                   id="studentName"
+                   name="studentName"
+                   placeholder="Student Full Name"
+                   data-i18n-placeholder="enroll.student_name_ph"
+                   required />
+
+            <label class="sr-only" for="grade" data-i18n="enroll.grade_label">Applying for</label>
+            <select class="input" id="grade" name="grade" required>
+              <option value="" data-i18n="enroll.grade_ph">Applying for (Nursery to Grade 10)</option>
+
+              <!-- Keep grade labels stable -->
+              <option class="notranslate" value="Nursery">Nursery</option>
+              <option class="notranslate" value="KG 1">KG 1</option>
+              <option class="notranslate" value="KG 2">KG 2</option>
+              <option class="notranslate" value="Grade 1">Grade 1</option>
+              <option class="notranslate" value="Grade 2">Grade 2</option>
+              <option class="notranslate" value="Grade 3">Grade 3</option>
+              <option class="notranslate" value="Grade 4">Grade 4</option>
+              <option class="notranslate" value="Grade 5">Grade 5</option>
+              <option class="notranslate" value="Grade 6">Grade 6</option>
+              <option class="notranslate" value="Grade 7">Grade 7</option>
+              <option class="notranslate" value="Grade 8">Grade 8</option>
+              <option class="notranslate" value="Grade 9">Grade 9</option>
+              <option class="notranslate" value="Grade 10">Grade 10</option>
+            </select>
+
+            <label class="sr-only" for="dob" data-i18n="enroll.dob_label">Date of Birth</label>
+            <input class="input" id="dob" name="dob" type="date" required />
+
+            <label class="sr-only" for="prevSchool" data-i18n="enroll.prev_school_label">Previous School (optional)</label>
+            <input class="input"
+                   id="prevSchool"
+                   name="prevSchool"
+                   placeholder="Previous School (optional)"
+                   data-i18n-placeholder="enroll.prev_school_ph" />
+
+            <label class="sr-only" for="address" data-i18n="enroll.address_label">Address</label>
+            <input class="input"
+                   id="address"
+                   name="address"
+                   placeholder="Address / Locality"
+                   data-i18n-placeholder="enroll.address_ph"
+                   required />
+
+            <div class="hr-soft" aria-hidden="true"></div>
+
+            <h3 class="card__title" style="font-size:18px;" data-i18n="enroll.guardian_title">Parent / Guardian</h3>
+
+            <label class="sr-only" for="guardianName" data-i18n="enroll.guardian_name_label">Parent/Guardian Name</label>
+            <input class="input"
+                   id="guardianName"
+                   name="guardianName"
+                   placeholder="Parent/Guardian Full Name"
+                   data-i18n-placeholder="enroll.guardian_name_ph"
+                   required />
+
+            <label class="sr-only" for="phone" data-i18n="enroll.phone_label">Phone</label>
+            <input class="input"
+                   id="phone"
+                   name="phone"
+                   placeholder="Phone Number"
+                   data-i18n-placeholder="enroll.phone_ph"
+                   inputmode="tel"
+                   autocomplete="tel"
+                   required />
+
+            <label class="sr-only" for="email" data-i18n="enroll.email_label">Email (optional)</label>
+            <input class="input"
+                   id="email"
+                   name="email"
+                   placeholder="Email (optional)"
+                   data-i18n-placeholder="enroll.email_ph"
+                   type="email"
+                   autocomplete="email" />
+
+            <label class="sr-only" for="notes" data-i18n="enroll.notes_label">Notes</label>
+            <textarea class="input"
+                      id="notes"
+                      name="notes"
+                      placeholder="Any notes (transport, timing, questions)"
+                      data-i18n-placeholder="enroll.notes_ph"
+                      rows="5"></textarea>
+
+            <!-- Honeypot -->
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+
+            <button class="btn btn--primary" type="submit" data-submit data-i18n="enroll.submit_btn">
+              Submit Inquiry
+            </button>
+
+            <p class="fineprint" data-i18n="enroll.fineprint">
+              After submission, you’ll see a confirmation on this page and we’ll also receive your inquiry by email.
+            </p>
+          </form>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="card">
+          <h2 class="card__title" data-i18n="enroll.next_title">What happens next</h2>
+
+          <p class="card__text" data-i18n="enroll.next_text">
+            Once we receive your inquiry, our team will contact you to confirm availability and guide you through the admission steps.
+          </p>
+
+          <div class="hr-soft" aria-hidden="true"></div>
+
+          <div class="features">
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">📞</div>
+              <div>
+                <div class="feature__title" data-i18n="enroll.step1_title">Call back confirmation</div>
+                <div class="feature__text" data-i18n="enroll.step1_text">We call you to confirm details and answer questions.</div>
+              </div>
+            </div>
+
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">🗓️</div>
+              <div>
+                <div class="feature__title" data-i18n="enroll.step2_title">School visit (optional)</div>
+                <div class="feature__text" data-i18n="enroll.step2_text">You can schedule a visit to see campus facilities.</div>
+              </div>
+            </div>
+
+            <div class="feature">
+              <div class="feature__icon" aria-hidden="true">📄</div>
+              <div>
+                <div class="feature__title" data-i18n="enroll.step3_title">Documents checklist</div>
+                <div class="feature__text" data-i18n="enroll.step3_text">
+                  We share a simple checklist (birth proof, previous marksheet, etc.).
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hr-soft" aria-hidden="true"></div>
+
+          <button class="btn btn--ghost" type="button"
+            onclick="document.getElementById('studentName').focus({preventScroll:true}); document.getElementById('enrollForm').scrollIntoView({behavior:'smooth', block:'start'});"
+            data-i18n="enroll.review_btn">
+            Review the form
+          </button>
+
+          <p class="fineprint" data-i18n="enroll.tip">
+            Tip: Keep phone number active for our call-back. Email is optional but helpful for sharing details.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="partials/footer.html"></div>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/gt.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/forms.js"></script>
+</body>
+</html>

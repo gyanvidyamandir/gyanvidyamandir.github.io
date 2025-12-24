@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" type="image/png" href="assets/img/favicon.svg">
+  <title>Contact • Gyan Vidya Mandir</title>
+  <meta name="description" content="Contact Gyan Vidya Mandir, Wadi." />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body>
+
+<div data-include="partials/header.html"></div>
+
+<!-- Flash messages mount -->
+<div class="flash-wrap" aria-live="polite" aria-atomic="true"></div>
+
+<main id="main">
+  <section class="page-hero">
+    <div class="container">
+      <h1 class="page-hero__title" data-i18n="contact.hero_title">Contact Us</h1>
+      <p class="page-hero__sub" data-i18n="contact.hero_sub">
+        Admissions, queries, visits—reach us for any school-related information.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid--2">
+
+        <div class="card">
+          <h2 class="card__title" data-i18n="contact.details_title">School details</h2>
+
+          <p class="card__text">
+            <b data-i18n="contact.details_school_label">School:</b>
+            <span class="notranslate">Gyan Vidya Mandir, Wadi</span>
+          </p>
+
+          <p class="card__text">
+            <b data-i18n="contact.details_grades_label">Grades:</b>
+            <span class="notranslate">Nursery to Grade 10</span>
+          </p>
+
+          <p class="card__text">
+            <b data-i18n="contact.details_medium_label">Medium:</b>
+            <span class="notranslate">English</span>
+          </p>
+
+          <p class="card__text">
+            <b data-i18n="contact.details_type_label">Type:</b>
+            <span class="notranslate">Co-educational</span>
+          </p>
+
+          <p class="card__text">
+            <b data-i18n="contact.details_location_label">Location:</b>
+            <span class="notranslate">Wadi, Nagpur (Gramin), Maharashtra</span>
+          </p>
+        </div>
+
+        <div class="card">
+          <h2 class="card__title" data-i18n="contact.form_title">Send a message</h2>
+
+          <form class="form js-form notranslate"
+                id="contactForm"
+                method="POST"
+                data-endpoint="https://formspree.io/f/mvzpqbwq"
+                data-subject="New Contact Message"
+                data-form-name="Contact Message">
+
+            <!-- Hidden context -->
+            <input type="hidden" name="formType" value="Contact Message" />
+            <input type="hidden" name="page" value="contact.html" />
+
+            <label class="sr-only" for="cName" data-i18n="contact.name_label">Your Name</label>
+            <input class="input"
+                   id="cName"
+                   name="name"
+                   placeholder="Your Name"
+                   data-i18n-placeholder="contact.name_ph"
+                   required />
+
+            <label class="sr-only" for="cPhone" data-i18n="contact.phone_label">Phone Number</label>
+            <input class="input"
+                   id="cPhone"
+                   name="phone"
+                   placeholder="Phone Number"
+                   data-i18n-placeholder="contact.phone_ph"
+                   inputmode="tel"
+                   autocomplete="tel"
+                   required />
+
+            <label class="sr-only" for="cEmail" data-i18n="contact.email_label">Email</label>
+            <input class="input"
+                   id="cEmail"
+                   name="email"
+                   type="email"
+                   placeholder="Email Address"
+                   data-i18n-placeholder="contact.email_ph"
+                   autocomplete="email"
+                   required />
+
+            <label class="sr-only" for="cMsg" data-i18n="contact.msg_label">Your message</label>
+            <textarea class="input"
+                      id="cMsg"
+                      name="message"
+                      rows="5"
+                      placeholder="Your message"
+                      data-i18n-placeholder="contact.msg_ph"
+                      required></textarea>
+
+            <!-- Honeypot -->
+            <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
+
+            <button class="btn btn--primary" type="submit" data-submit data-i18n="contact.submit_btn">Submit</button>
+
+            <p class="fineprint" data-i18n="contact.fineprint">
+              We’ll reply within 24–48 hours. Phone helps us call back quickly.
+            </p>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="partials/footer.html"></div>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/gt.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/forms.js"></script>
+</body>
+</html>
