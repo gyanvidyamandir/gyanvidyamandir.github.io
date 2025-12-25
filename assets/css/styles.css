@@ -1247,7 +1247,7 @@ button{ font-family:inherit; }
 #overview{ margin-top:4px; }
 
 /* Tighter section padding tweak */
-.section{ padding-top:10px; padding-bottom:48px; }
+.section{ padding-top:5px; padding-bottom:48px; }
 
 /* Badge sizing fix */
 .page-hero .badge,
@@ -3517,4 +3517,132 @@ button.btn{
   color: rgba(20,25,30,.75);
   font-weight: 500;
   line-height: 1.6;
+}
+
+/* =========================
+   PAGE HERO (About/Admissions etc.)
+========================= */
+
+.page-hero{
+  padding: clamp(28px, 4vw, 56px) 0;
+}
+
+.page-hero .container{
+  position: relative;
+}
+
+/* Title */
+.page-hero__title{
+  margin: 0;
+  font-size: clamp(34px, 4.2vw, 54px);
+  line-height: 1.08;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35em;
+  align-items: baseline;
+}
+
+/* The "About" prefix */
+.page-hero__title [data-i18n]{
+  opacity: .92;
+  font-weight: 900;
+}
+
+/* The school name part */
+.page-hero__title .notranslate{
+  position: relative;
+  font-weight: 950;
+}
+
+
+/* Subtitle */
+.page-hero__sub{
+  margin: 14px 0 0;
+  max-width: 72ch;
+  font-size: clamp(15px, 1.15vw, 18px);
+  line-height: 1.6;
+  color: #475569;
+}
+
+/* Soft HR */
+.hr-soft{
+  margin-top: clamp(16px, 2vw, 24px);
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(15, 23, 42, .14),
+    transparent
+  );
+}
+
+/* Mobile tuning */
+@media (max-width: 520px){
+  .page-hero__title{
+    line-height: 1.06;
+    gap: .25em;
+  }
+  .page-hero__title .notranslate::after{
+    width: 85%;
+    bottom: -9px;
+    height: 7px;
+  }
+}
+
+/* =========================================================
+   PAGE HERO SPACING + FONT (About / Admissions)
+   Put this at the bottom of styles.css
+========================================================= */
+
+/* Reduce extra whitespace in the hero */
+.page-hero{
+  padding: clamp(16px, 2.2vw, 28px) 0 !important;
+}
+
+/* Remove big bottom margin that often pushes the next section down */
+.page-hero .container{
+  padding-bottom: 0 !important;
+}
+
+/* Make title slightly smaller (still premium) */
+.page-hero__title{
+  font-size: clamp(28px, 3.2vw, 44px) !important;
+  line-height: 1.08 !important;
+  margin: 0 !important;
+}
+
+/* Subtitle tighter */
+.page-hero__sub{
+  margin-top: 10px !important;
+  margin-bottom: 0 !important;
+  font-size: clamp(14px, 1.2vw, 17px) !important;
+}
+
+/* HR should not create extra gap */
+.hr-soft{
+  margin-top: 12px !important;
+  margin-bottom: 0 !important;
+}
+
+/* FIRST section after hero should start closer */
+.page-hero + .section{
+  padding-top: clamp(14px, 2vw, 22px) !important;
+}
+
+/* Your “Overview” heading block: reduce extra gap */
+.section__head{
+  margin-bottom: 14px !important;
+}
+
+/* Reduce overall section padding a bit (keeps the page tighter) */
+.section{
+  padding: clamp(22px, 3vw, 36px) 0 !important;
+}
+
+/* If you use section--tight anywhere, make it tighter */
+.section--tight{
+  padding: clamp(16px, 2.2vw, 28px) 0 !important;
 }
