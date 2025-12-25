@@ -12,9 +12,6 @@
 
 <div data-include="partials/header.html"></div>
 
-<!-- Flash messages mount -->
-<div class="flash-wrap" aria-live="polite" aria-atomic="true"></div>
-
 <main id="main">
   <section class="page-hero">
     <div class="container">
@@ -32,89 +29,88 @@
         <div class="card">
           <h2 class="card__title" data-i18n="contact.details_title">School details</h2>
 
-          <p class="card__text">
-            <b data-i18n="contact.details_school_label">School:</b>
-            <span class="notranslate">Gyan Vidya Mandir, Wadi</span>
-          </p>
-
-          <p class="card__text">
-            <b data-i18n="contact.details_grades_label">Grades:</b>
-            <span class="notranslate">Nursery to Grade 10</span>
-          </p>
-
-          <p class="card__text">
-            <b data-i18n="contact.details_medium_label">Medium:</b>
-            <span class="notranslate">English</span>
-          </p>
-
-          <p class="card__text">
-            <b data-i18n="contact.details_type_label">Type:</b>
-            <span class="notranslate">Co-educational</span>
-          </p>
-
-          <p class="card__text">
-            <b data-i18n="contact.details_location_label">Location:</b>
-            <span class="notranslate">Wadi, Nagpur (Gramin), Maharashtra</span>
-          </p>
+          <p class="card__text"><b>School:</b> <span class="notranslate">Gyan Vidya Mandir, Wadi</span></p>
+          <p class="card__text"><b>Grades:</b> <span class="notranslate">Nursery to Grade 10</span></p>
+          <p class="card__text"><b>Medium:</b> <span class="notranslate">English</span></p>
+          <p class="card__text"><b>Type:</b> <span class="notranslate">Co-educational</span></p>
+          <p class="card__text"><b>Location:</b> <span class="notranslate">Wadi, Nagpur (Gramin), Maharashtra</span></p>
         </div>
 
         <div class="card">
           <h2 class="card__title" data-i18n="contact.form_title">Send a message</h2>
 
-          <form class="form js-form notranslate"
+          <!-- ✅ AJAX submit enabled via JS -->
+          <form class="form notranslate"
                 id="contactForm"
                 method="POST"
-                data-endpoint="https://formspree.io/f/mvzpqbwq"
-                data-subject="New Contact Message"
-                data-form-name="Contact Message">
+                action="https://formsubmit.co/gyanvidyamandir9@gmail.com"
+                data-ajax="true">
+
+            <!-- FormSubmit config -->
+            <input type="hidden" name="_subject" value="New Contact Message – Gyan Vidya Mandir" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_captcha" value="false" />
 
             <!-- Hidden context -->
             <input type="hidden" name="formType" value="Contact Message" />
             <input type="hidden" name="page" value="contact.html" />
 
-            <label class="sr-only" for="cName" data-i18n="contact.name_label">Your Name</label>
+            <label class="sr-only" for="cName">Your Name</label>
             <input class="input"
                    id="cName"
                    name="name"
                    placeholder="Your Name"
-                   data-i18n-placeholder="contact.name_ph"
                    required />
 
-            <label class="sr-only" for="cPhone" data-i18n="contact.phone_label">Phone Number</label>
+            <label class="sr-only" for="cPhone">Phone Number</label>
             <input class="input"
                    id="cPhone"
                    name="phone"
                    placeholder="Phone Number"
-                   data-i18n-placeholder="contact.phone_ph"
                    inputmode="tel"
                    autocomplete="tel"
                    required />
 
-            <label class="sr-only" for="cEmail" data-i18n="contact.email_label">Email</label>
+            <!-- ✅ Email optional -->
+            <label class="sr-only" for="cEmail">Email</label>
             <input class="input"
                    id="cEmail"
                    name="email"
                    type="email"
-                   placeholder="Email Address"
-                   data-i18n-placeholder="contact.email_ph"
-                   autocomplete="email"
-                   required />
+                   placeholder="Email Address (optional)"
+                   autocomplete="email" />
 
-            <label class="sr-only" for="cMsg" data-i18n="contact.msg_label">Your message</label>
+            <!-- ✅ Related to (required) -->
+            <label class="sr-only" for="cTopic">Related to</label>
+            <select class="input" id="cTopic" name="topic" required>
+              <option value="" selected disabled>Related to…</option>
+              <option value="Admissions">Admissions</option>
+              <option value="Fees / Payment">Fees / Payment</option>
+              <option value="Transport">Transport</option>
+              <option value="Academics / Curriculum">Academics / Curriculum</option>
+              <option value="Uniform / Books">Uniform / Books</option>
+              <option value="Documents / Certificates">Documents / Certificates</option>
+              <option value="Events / Activities">Events / Activities</option>
+              <option value="General query">General query</option>
+            </select>
+
+            <label class="sr-only" for="cMsg">Your message</label>
             <textarea class="input"
                       id="cMsg"
                       name="message"
                       rows="5"
                       placeholder="Your message"
-                      data-i18n-placeholder="contact.msg_ph"
                       required></textarea>
 
             <!-- Honeypot -->
             <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
 
-            <button class="btn btn--primary" type="submit" data-submit data-i18n="contact.submit_btn">Submit</button>
+            <!-- ✅ Inline message area (errors + success) -->
+            <div class="form-flash" data-form-flash aria-live="polite" aria-atomic="true"></div>
 
-            <p class="fineprint" data-i18n="contact.fineprint">
+            <button class="btn btn--primary" type="submit">Submit</button>
+
+            <p class="fineprint">
               We’ll reply within 24–48 hours. Phone helps us call back quickly.
             </p>
           </form>
@@ -126,9 +122,9 @@
 </main>
 
 <div data-include="partials/footer.html"></div>
+
 <script src="assets/js/app.js"></script>
 <script src="assets/js/gt.js"></script>
 <script src="assets/js/i18n.js"></script>
-<script src="assets/js/forms.js"></script>
 </body>
 </html>

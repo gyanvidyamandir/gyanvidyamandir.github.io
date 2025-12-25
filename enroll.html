@@ -12,7 +12,6 @@
 
 <div data-include="partials/header.html"></div>
 
-<!-- Flash messages mount -->
 <div class="flash-wrap" aria-live="polite" aria-atomic="true"></div>
 
 <main id="main">
@@ -27,18 +26,27 @@
 
   <section class="section">
     <div class="container">
-      <div class="grid grid--2">
+      <div class="grid grid--2 enroll-grid">
 
-        <!-- LEFT: Student -->
-        <div class="card">
+        <!-- LEFT: Form -->
+        <div class="card enroll-card enroll-card--form">
           <h2 class="card__title" data-i18n="enroll.student_title">Student information</h2>
 
-          <form class="form js-form notranslate"
+          <!-- ✅ Inline form message (handled by app.js) -->
+          
+
+          <!-- ✅ FormSubmit via app.js (no redirect) -->
+          <form class="form notranslate"
                 id="enrollForm"
+                action="https://formsubmit.co/gyanvidyamandir9@gmail.com"
                 method="POST"
-                data-endpoint="https://formspree.io/f/mlgrllzb"
-                data-subject="New Enrollment Inquiry"
-                data-form-name="Enrollment Inquiry">
+                data-ajax="true">
+            
+                <div class="form-flash" data-form-flash aria-live="polite" aria-atomic="true"></div>
+            <!-- FormSubmit config -->
+            <input type="hidden" name="_subject" value="New Enrollment Inquiry – Gyan Vidya Mandir" />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_template" value="table" />
 
             <!-- Hidden context -->
             <input type="hidden" name="formType" value="Enrollment Inquiry" />
@@ -54,9 +62,7 @@
 
             <label class="sr-only" for="grade" data-i18n="enroll.grade_label">Applying for</label>
             <select class="input" id="grade" name="grade" required>
-              <option value="" data-i18n="enroll.grade_ph">Applying for (Nursery to Grade 10)</option>
-
-              <!-- Keep grade labels stable -->
+              <option value="" selected disabled data-i18n="enroll.grade_ph">Applying for (Nursery to Grade 10)</option>
               <option class="notranslate" value="Nursery">Nursery</option>
               <option class="notranslate" value="KG 1">KG 1</option>
               <option class="notranslate" value="KG 2">KG 2</option>
@@ -110,6 +116,7 @@
                    data-i18n-placeholder="enroll.phone_ph"
                    inputmode="tel"
                    autocomplete="tel"
+                   data-phone
                    required />
 
             <label class="sr-only" for="email" data-i18n="enroll.email_label">Email (optional)</label>
@@ -132,7 +139,7 @@
             <!-- Honeypot -->
             <input type="text" name="_gotcha" class="hp" tabindex="-1" autocomplete="off" />
 
-            <button class="btn btn--primary" type="submit" data-submit data-i18n="enroll.submit_btn">
+            <button class="btn btn--primary" type="submit" data-i18n="enroll.submit_btn">
               Submit Inquiry
             </button>
 
@@ -143,9 +150,8 @@
         </div>
 
         <!-- RIGHT -->
-        <div class="card">
+        <div class="card enroll-card enroll-card--info">
           <h2 class="card__title" data-i18n="enroll.next_title">What happens next</h2>
-
           <p class="card__text" data-i18n="enroll.next_text">
             Once we receive your inquiry, our team will contact you to confirm availability and guide you through the admission steps.
           </p>
@@ -203,6 +209,5 @@
 <script src="assets/js/app.js"></script>
 <script src="assets/js/gt.js"></script>
 <script src="assets/js/i18n.js"></script>
-<script src="assets/js/forms.js"></script>
 </body>
 </html>

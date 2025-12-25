@@ -2232,7 +2232,7 @@ button.btn{
 
 /* Enlarge the smaller ones to match WhatsApp visually */
 .footer__socials img[src*="facebook"]{
-  transform:scale(1.38) !important; /* adjust 1.12–1.25 if needed */
+  transform:scale(0.8) !important; /* adjust 1.12–1.25 if needed */
   transform-origin:center;
 }
 
@@ -2456,3 +2456,620 @@ button.btn{
     max-width: 100%;
   }
 }
+
+/* =========================================================
+   CONTACT FORM — FINAL ADD-ON CSS (paste at very bottom)
+   ✅ premium look
+   ✅ single column
+   ✅ inline success/error message near form (form-flash)
+   ✅ better select styling
+========================================================= */
+
+/* 1) Force single column for the contact form (all screen sizes) */
+#contactForm,
+#contactForm.form{
+  display: grid;
+  grid-template-columns: 1fr !important;
+  gap: 14px;
+}
+
+/* 2) Make the card holding the form feel premium (only the card that has #contactForm) */
+.card:has(#contactForm){
+  border-radius: 28px !important;
+  border: 1px solid rgba(255,255,255,.30) !important;
+  background:
+    radial-gradient(900px 360px at 12% 0%, rgba(255, 210, 74, .22), transparent 60%),
+    radial-gradient(700px 320px at 95% 100%, rgba(88, 170, 255, .18), transparent 62%),
+    rgba(255,255,255,.72) !important;
+  box-shadow:
+    0 22px 70px rgba(0,0,0,.18),
+    0 2px 0 rgba(255,255,255,.35) inset !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 3) Inputs, textarea, select — clean, consistent */
+#contactForm .input{
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.92);
+  color: #111827;
+  font-weight: 650;
+  outline: none;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.08),
+    0 1px 0 rgba(255,255,255,.85) inset;
+  transition: transform .15s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+/* Textarea sizing */
+#contactForm textarea.input{
+  height: auto;
+  min-height: 150px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+/* Select styling + arrow */
+#contactForm select.input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  padding-right: 42px; /* room for arrow */
+  cursor: pointer;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.92)),
+    rgba(255,255,255,.92);
+}
+
+/* Add a subtle arrow using a background image (CSS only) */
+#contactForm select.input{
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(17,24,39,.55) 50%),
+    linear-gradient(135deg, rgba(17,24,39,.55) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0,0,0,.10), rgba(0,0,0,.10));
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%,
+    calc(100% - 40px) 50%;
+  background-size:
+    6px 6px,
+    6px 6px,
+    1px 18px;
+  background-repeat: no-repeat;
+}
+
+/* Placeholders */
+#contactForm .input::placeholder{
+  color: rgba(17,24,39,.55);
+  font-weight: 600;
+}
+
+/* Focus state */
+#contactForm .input:focus{
+  border-color: rgba(255, 193, 46, .85);
+  box-shadow:
+    0 18px 44px rgba(255, 193, 46, .22),
+    0 10px 26px rgba(0,0,0,.10);
+  transform: translateY(-1px);
+}
+
+/* 4) Inline message area (errors + success) */
+#contactForm .form-flash{
+  display: none;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(11,18,32,.14);
+  background: rgba(255,255,255,.78);
+  color: rgba(11,18,32,.90);
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 10px 22px rgba(2,6,23,.08);
+}
+
+/* Show when JS adds class */
+#contactForm .form-flash.is-show{
+  display: block;
+}
+
+/* Error style */
+#contactForm .form-flash[data-type="error"]{
+  border-color: rgba(220,38,38,.25);
+  background: rgba(220,38,38,.08);
+  color: #7f1d1d;
+}
+
+/* Success style */
+#contactForm .form-flash[data-type="success"]{
+  border-color: rgba(15,118,110,.25);
+  background: rgba(15,118,110,.08);
+  color: #064e3b;
+}
+
+/* Info style (optional) */
+#contactForm .form-flash[data-type="info"]{
+  border-color: rgba(245,158,11,.28);
+  background: rgba(245,158,11,.10);
+  color: #7c2d12;
+}
+
+/* 5) Make the submit button full-width (and consistent with your button system) */
+#contactForm button[type="submit"],
+#contactForm input[type="submit"]{
+  width: 100% !important;
+}
+
+/* 6) Fineprint spacing */
+#contactForm .fineprint{
+  margin-top: 8px;
+  color: rgba(11,18,32,.62);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* 7) Mobile: slightly tighter input height */
+@media (max-width: 560px){
+  #contactForm .input{
+    height: 44px;
+  }
+}
+
+/* =========================================================
+   ENROLL PAGE — FORM STYLING (matches Contact form)
+========================================================= */
+
+/* 1️⃣ Make both cards same height on desktop */
+.grid.grid--2:has(#enrollForm){
+  align-items: stretch;
+}
+.grid.grid--2:has(#enrollForm) > .card{
+  height: 100%;
+}
+
+/* 2️⃣ Enroll form → single column everywhere */
+#enrollForm{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+/* 3️⃣ Premium background for enroll form card */
+.card:has(#enrollForm){
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,.30);
+  background:
+    radial-gradient(900px 360px at 12% 0%, rgba(255,210,74,.22), transparent 60%),
+    radial-gradient(700px 320px at 95% 100%, rgba(88,170,255,.18), transparent 62%),
+    rgba(255,255,255,.72);
+  box-shadow:
+    0 22px 70px rgba(0,0,0,.18),
+    0 2px 0 rgba(255,255,255,.35) inset;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 4️⃣ Inputs / textarea / select */
+#enrollForm .input{
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.92);
+  color: #111827;
+  font-weight: 600;
+  outline: none;
+  box-shadow:
+    0 10px 26px rgba(0,0,0,.08),
+    0 1px 0 rgba(255,255,255,.85) inset;
+  transition: transform .15s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+/* Textarea */
+#enrollForm textarea.input{
+  min-height: 150px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+/* 5️⃣ Select dropdown arrow (same as Contact) */
+#enrollForm select.input{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 42px;
+  cursor: pointer;
+
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.96), rgba(255,255,255,.92)),
+    rgba(255,255,255,.92);
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, rgba(17,24,39,.55) 50%),
+    linear-gradient(135deg, rgba(17,24,39,.55) 50%, transparent 50%),
+    linear-gradient(90deg, rgba(0,0,0,.10), rgba(0,0,0,.10));
+  background-position:
+    calc(100% - 18px) 50%,
+    calc(100% - 12px) 50%,
+    calc(100% - 40px) 50%;
+  background-size:
+    6px 6px,
+    6px 6px,
+    1px 18px;
+  background-repeat: no-repeat;
+}
+
+/* Focus state */
+#enrollForm .input:focus{
+  border-color: rgba(255,193,46,.9);
+  box-shadow:
+    0 18px 44px rgba(255,193,46,.22),
+    0 10px 26px rgba(0,0,0,.10);
+  transform: translateY(-1px);
+}
+
+/* 6️⃣ Inline flash message (error / success) */
+#enrollForm .form-flash{
+  display: none;
+  padding: 12px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 10px 22px rgba(2,6,23,.08);
+}
+
+#enrollForm .form-flash.is-show{
+  display: block;
+}
+
+#enrollForm .form-flash[data-type="error"]{
+  border: 1px solid rgba(220,38,38,.25);
+  background: rgba(220,38,38,.08);
+  color: #7f1d1d;
+}
+
+#enrollForm .form-flash[data-type="success"]{
+  border: 1px solid rgba(15,118,110,.25);
+  background: rgba(15,118,110,.08);
+  color: #064e3b;
+}
+
+/* 7️⃣ Submit button full width */
+#enrollForm button[type="submit"]{
+  width: 100%;
+}
+
+/* 8️⃣ Right-side card polish */
+.grid.grid--2:has(#enrollForm) > .card:not(:has(#enrollForm)){
+  padding: 24px;
+}
+.grid.grid--2:has(#enrollForm) > .card:not(:has(#enrollForm)) .btn{
+  width: 100%;
+}
+
+/* 9️⃣ Fineprint */
+#enrollForm .fineprint{
+  margin-top: 8px;
+  font-size: 13.5px;
+  color: rgba(11,18,32,.62);
+}
+
+/* 🔟 Mobile tweaks */
+@media (max-width: 560px){
+  #enrollForm .input{
+    height: 44px;
+  }
+}
+
+
+/* =========================================================
+   ENROLL — match Contact form style + inline messages
+   Paste at END of styles.css
+========================================================= */
+
+/* Equal height cards on desktop */
+.enroll-grid{
+  align-items: stretch;
+}
+.enroll-grid > .enroll-card{
+  height: 100%;
+}
+
+/* Premium look for form card */
+.enroll-card--form{
+  border-radius: 28px !important;
+  border: 1px solid rgba(255,255,255,.30) !important;
+  background:
+    radial-gradient(900px 360px at 12% 0%, rgba(255,210,74,.22), transparent 60%),
+    radial-gradient(700px 320px at 95% 100%, rgba(88,170,255,.18), transparent 62%),
+    rgba(255,255,255,.72) !important;
+  box-shadow:
+    0 22px 70px rgba(0,0,0,.18),
+    0 2px 0 rgba(255,255,255,.35) inset !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Enroll form single column */
+#enrollForm{
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+/* Inline message (success/error) */
+#enrollInlineMsg.form-flash{
+  display: none;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 10px 22px rgba(2,6,23,.08);
+  margin-bottom: 6px;
+}
+
+#enrollInlineMsg.form-flash.is-show{
+  display: block;
+}
+
+#enrollInlineMsg.form-flash[data-type="error"]{
+  border: 1px solid rgba(220,38,38,.25);
+  background: rgba(220,38,38,.08);
+  color: #7f1d1d;
+}
+
+#enrollInlineMsg.form-flash[data-type="success"]{
+  border: 1px solid rgba(15,118,110,.25);
+  background: rgba(15,118,110,.08);
+  color: #064e3b;
+}
+
+/* Make Review button full width inside right card */
+.enroll-card--info .btn{
+  width: 100%;
+}
+
+/* =========================================
+   FOOTER FIX (matches your footer.html)
+   Paste at END of styles.css
+========================================= */
+
+/* Main footer shell */
+.footer {
+  position: relative;
+  padding: 44px 0 26px;
+  border-top: 1px solid rgba(255, 255, 255, .10);
+  background:
+    radial-gradient(900px 360px at 12% 10%, rgba(70,140,255,.18), transparent 60%),
+    radial-gradient(900px 380px at 92% 90%, rgba(140,90,255,.18), transparent 60%),
+    rgba(10, 12, 18, .92);
+  color: rgba(255, 255, 255, .78);
+}
+
+/* Top layout: brand left, links right */
+.footer__top {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 34px;
+  align-items: start;
+}
+
+/* Brand row (logo + name) */
+.footer .brand--footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.footer .brand__logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+  background: rgba(255,255,255,.08);
+  box-shadow: 0 10px 24px rgba(0,0,0,.35);
+  flex: 0 0 auto;
+}
+
+.footer__name {
+  font-weight: 800;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .92);
+  font-size: 18px;
+  line-height: 1.15;
+}
+
+/* Footer tagline paragraph */
+.footer__tag {
+  margin: 14px 0 16px;
+  color: rgba(255, 255, 255, .64);
+  line-height: 1.65;
+  max-width: 54ch;
+}
+
+/* Address/phone/established block */
+.footer__meta p {
+  margin: 10px 0;
+  line-height: 1.55;
+}
+
+.footer__meta b {
+  color: rgba(255, 255, 255, .92);
+  font-weight: 700;
+}
+
+/* Social icons row */
+.footer__socials {
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+  align-items: center;
+}
+
+.footer__socials .social-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.footer__socials .social-icon:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
+
+.footer__socials .social-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+/* Links grid */
+.footer__cols {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(140px, 1fr));
+  gap: 22px;
+  align-items: start;
+}
+
+/* Column titles */
+.footer__title {
+  margin: 0 0 12px;
+  font-size: 12.5px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .88);
+}
+
+/* Links */
+.footer__col a {
+  display: inline-block;
+  padding: 7px 0;
+  color: rgba(255, 255, 255, .66);
+  text-decoration: none;
+  transition: color .15s ease, transform .15s ease;
+}
+
+.footer__col a:hover {
+  color: rgba(255, 255, 255, .92);
+  transform: translateX(2px);
+}
+
+/* Bottom row */
+.footer__bottom {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.10);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.footer__copy {
+  color: rgba(255, 255, 255, .55);
+  font-size: 14px;
+}
+
+/* Back to top (style only, not behavior) */
+.footer__toplink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+
+  color: rgba(255,255,255,.78);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  box-shadow: 0 14px 30px rgba(0,0,0,.25);
+
+  transition: transform .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.footer__toplink:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.18);
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .footer__cols {
+    grid-template-columns: repeat(2, minmax(140px, 1fr));
+    gap: 16px 18px;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .footer {
+    padding: 36px 0 22px;
+  }
+
+  .footer__cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer__toplink {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+.form-flash {
+  display: none;
+  margin: 12px 0 10px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.35;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(0,0,0,.04);
+}
+
+.form-flash.is-show { display: block; }
+
+.form-flash[data-type="success"] {
+  border-color: rgba(34, 197, 94, .35);
+  background: rgba(34, 197, 94, .10);
+}
+
+.form-flash[data-type="error"] {
+  border-color: rgba(239, 68, 68, .35);
+  background: rgba(239, 68, 68, .10);
+}
+
+.form-flash[data-type="info"] {
+  border-color: rgba(59, 130, 246, .35);
+  background: rgba(59, 130, 246, .10);
+}
+
