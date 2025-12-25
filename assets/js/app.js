@@ -1,5 +1,5 @@
 /* =========================================================
-   app.js (FINAL CLEAN)
+   app.js (FINAL)
    - Prevent flicker: hide page until partials load
    - HTML partial includes
    - Mobile nav (hamburger only)
@@ -8,6 +8,8 @@
    - Language segmented toggle
    - Back to top (ultra robust)
    - FormSubmit (AJAX, inline flash, phone validation) for any form[data-ajax="true"]
+   - Interactive Academic Calendar (2 months view) March 2025 → April 2026
+   - Gallery Lightbox (optional; if markup exists)
 ========================================================= */
 
 (() => {
@@ -247,8 +249,11 @@
 
     function isValidPhone(raw) {
       const digits = onlyDigits(raw);
-      // India-friendly: 10 digits, or 12 digits starting with 91; also allow 10–15 generic if you want
-      return digits.length === 10 || (digits.length === 12 && digits.startsWith("91")) || (digits.length >= 10 && digits.length <= 15);
+      return (
+        digits.length === 10 ||
+        (digits.length === 12 && digits.startsWith("91")) ||
+        (digits.length >= 10 && digits.length <= 15)
+      );
     }
 
     function getFlash(form) {
@@ -362,6 +367,330 @@
   }
 
   /* =========================
+     Interactive Academic Calendar
+     - March 2025 → April 2026
+     - ALWAYS opens current month + next month (if current month in range)
+     - Otherwise opens first page (before range) or last page (after range)
+     Requires:
+       #academicCalendar mount
+       [data-cal-prev], [data-cal-next], [data-cal-range] exist (if you use controls)
+  ========================= */
+  function initAcademicCalendar() {
+    const mount = document.getElementById("academicCalendar");
+    if (!mount) return;
+
+    // ✅ EDIT EVENTS ANYTIME (YYYY-MM-DD)
+    const events = [
+      // Term / Session
+      { date: "2025-03-25", type: "term", title: "New session planning / orientation week (tentative)" },
+      { date: "2025-04-01", type: "term", title: "Academic Session Begins (tentative)" },
+
+      // Holidays (examples)
+      { date: "2025-04-14", type: "holiday", title: "Ambedkar Jayanti (holiday) (tentative)" },
+      { date: "2025-08-15", type: "holiday", title: "Independence Day (holiday)" },
+      { date: "2025-10-02", type: "holiday", title: "Gandhi Jayanti (holiday)" },
+      { date: "2025-12-25", type: "holiday", title: "Christmas (holiday)" },
+      { date: "2026-01-26", type: "holiday", title: "Republic Day (holiday)" },
+      { date: "2026-03-14", type: "holiday", title: "Holi (holiday) (tentative)" },
+
+      // Events
+      { date: "2025-06-21", type: "event", title: "International Yoga Day activities" },
+      { date: "2025-08-10", type: "event", title: "Independence Day rehearsal week" },
+      { date: "2026-01-20", type: "event", title: "Annual Day / Cultural Program week (tentative)" },
+
+      // PTMs
+      { date: "2025-05-25", type: "ptm", title: "PTM – Progress discussion (tentative)" },
+      { date: "2025-09-28", type: "ptm", title: "PTM – Half-year results discussion (tentative)" },
+      { date: "2025-12-14", type: "ptm", title: "PTM – Term 2 progress (tentative)" },
+      { date: "2026-03-22", type: "ptm", title: "PTM – Final results discussion (tentative)" },
+
+      // Exams (sample)
+      { date: "2025-06-10", type: "exam", title: "Unit Test 1 (UT-1) begins (tentative)" },
+      { date: "2025-06-15", type: "exam", title: "UT-1 ends (tentative)" },
+
+      { date: "2025-08-26", type: "exam", title: "Unit Test 2 (UT-2) begins (tentative)" },
+      { date: "2025-08-31", type: "exam", title: "UT-2 ends (tentative)" },
+
+      { date: "2025-09-16", type: "exam", title: "Half-Yearly Exams begin (tentative)" },
+      { date: "2025-09-28", type: "exam", title: "Half-Yearly Exams end (tentative)" },
+
+      { date: "2025-11-18", type: "exam", title: "Unit Test 3 (UT-3) begins (tentative)" },
+      { date: "2025-11-23", type: "exam", title: "UT-3 ends (tentative)" },
+
+      { date: "2026-02-10", type: "exam", title: "Final Exams begin (tentative)" },
+      { date: "2026-02-22", type: "exam", title: "Final Exams end (tentative)" },
+
+      { date: "2026-04-05", type: "term", title: "Session closes / preparation for next session (tentative)" },
+    ];
+
+    const map = new Map();
+    for (const e of events) {
+      if (!map.has(e.date)) map.set(e.date, []);
+      map.get(e.date).push(e);
+    }
+
+    const monthNames = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+    const dow = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+
+    // ✅ Range: March 2025 → April 2026
+    const start = new Date(2025, 2, 1); // Mar 2025
+    const end = new Date(2026, 3, 1);   // Apr 2026
+
+    // ✅ Only 2 months visible
+    const monthsPerPage = 2;
+
+    const allMonths = [];
+    {
+      const cur = new Date(start);
+      while (cur <= end) {
+        allMonths.push({ y: cur.getFullYear(), m: cur.getMonth() });
+        cur.setMonth(cur.getMonth() + 1);
+      }
+    }
+
+    // ✅ Decide initial page: current month + next month if in range
+    let page = 0;
+    {
+      const now = new Date();
+      const idx = allMonths.findIndex(({ y, m }) => y === now.getFullYear() && m === now.getMonth());
+      const maxPage = Math.ceil(allMonths.length / monthsPerPage) - 1;
+
+      if (idx !== -1) {
+        page = Math.floor(idx / monthsPerPage);
+        page = Math.min(page, maxPage);
+      } else {
+        const rangeStart = new Date(allMonths[0].y, allMonths[0].m, 1);
+        const last = allMonths[allMonths.length - 1];
+        const rangeEnd = new Date(last.y, last.m + 1, 0);
+        page = now < rangeStart ? 0 : maxPage;
+      }
+    }
+
+    // Tooltip
+    let tip = document.querySelector(".cal-tip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.className = "cal-tip";
+      tip.innerHTML = `<div class="cal-tip__date"></div><div class="cal-tip__list"></div>`;
+      document.body.appendChild(tip);
+    }
+
+    const typeLabel = (t) => ({
+      term: "Term",
+      exam: "Exams",
+      ptm: "PTM",
+      event: "Event",
+      holiday: "Holiday",
+    }[t] || "Info");
+
+    const typeClass = (t) => ({
+      term: "term",
+      exam: "exam",
+      ptm: "ptm",
+      event: "event",
+      holiday: "holiday",
+    }[t] || "event");
+
+    function fmtDateKey(y, m, d) {
+      const mm = String(m + 1).padStart(2, "0");
+      const dd = String(d).padStart(2, "0");
+      return `${y}-${mm}-${dd}`;
+    }
+
+    function renderMonth(y, m) {
+      const monthWrap = document.createElement("div");
+      monthWrap.className = "cal-month";
+
+      const head = document.createElement("div");
+      head.className = "cal-month__head";
+      head.innerHTML = `
+        <div class="cal-month__title">${monthNames[m]} ${y}</div>
+      `;
+      monthWrap.appendChild(head);
+
+      const grid = document.createElement("div");
+      grid.className = "cal-grid";
+
+      const dowRow = document.createElement("div");
+      dowRow.className = "cal-dow";
+      dowRow.innerHTML = dow.map(d => `<span>${d}</span>`).join("");
+      grid.appendChild(dowRow);
+
+      const days = document.createElement("div");
+      days.className = "cal-days";
+
+      const first = new Date(y, m, 1);
+      const last = new Date(y, m + 1, 0);
+      const totalDays = last.getDate();
+      const firstDow = (first.getDay() + 6) % 7; // Mon=0
+
+      for (let i = 0; i < firstDow; i++) {
+        const empty = document.createElement("div");
+        empty.className = "cal-day is-empty";
+        days.appendChild(empty);
+      }
+
+      for (let d = 1; d <= totalDays; d++) {
+        const key = fmtDateKey(y, m, d);
+        const evs = map.get(key) || [];
+
+        const cell = document.createElement("div");
+        cell.className = "cal-day";
+        cell.tabIndex = 0;
+        cell.innerHTML = `<div class="cal-day__num">${d}</div>`;
+
+        if (evs.length) {
+          cell.classList.add("has-events");
+
+          const badges = document.createElement("div");
+          badges.className = "cal-badges";
+
+          const uniq = [...new Set(evs.map(e => e.type))].slice(0, 4);
+          uniq.forEach((t) => {
+            const dot = document.createElement("span");
+            dot.className = `cal-dot cal-dot--${typeClass(t)}`;
+            badges.appendChild(dot);
+          });
+
+          cell.appendChild(badges);
+
+          const showTip = (clientX, clientY) => {
+            tip.querySelector(".cal-tip__date").textContent = `${d} ${monthNames[m]} ${y}`;
+            tip.querySelector(".cal-tip__list").innerHTML = evs.map((e) => `
+              <div class="cal-tip__item">
+                <span class="cal-tip__tag">
+                  <span class="cal-tip__swatch" style="background: var(--cal-${typeClass(e.type)});"></span>
+                  ${typeLabel(e.type)}:
+                </span>
+                ${e.title}
+              </div>
+            `).join("");
+
+            const pad = 14;
+            tip.classList.add("is-show");
+
+            const tw = tip.offsetWidth;
+            const th = tip.offsetHeight;
+
+            let x = clientX + pad;
+            let yPos = clientY + pad;
+
+            if (x + tw > window.innerWidth - 10) x = clientX - tw - pad;
+            if (yPos + th > window.innerHeight - 10) yPos = clientY - th - pad;
+
+            tip.style.left = `${Math.max(10, x)}px`;
+            tip.style.top = `${Math.max(10, yPos)}px`;
+          };
+
+          const hideTip = () => tip.classList.remove("is-show");
+
+          cell.addEventListener("mousemove", (e) => showTip(e.clientX, e.clientY));
+          cell.addEventListener("mouseleave", hideTip);
+
+          cell.addEventListener("focus", () => {
+            const r = cell.getBoundingClientRect();
+            showTip(r.left + r.width / 2, r.top + r.height / 2);
+          });
+          cell.addEventListener("blur", hideTip);
+
+          cell.addEventListener("click", (e) => {
+            if (tip.classList.contains("is-show")) hideTip();
+            else showTip(e.clientX || 20, e.clientY || 20);
+          });
+        }
+
+        days.appendChild(cell);
+      }
+
+      grid.appendChild(days);
+      monthWrap.appendChild(grid);
+      return monthWrap;
+    }
+
+    function renderPage() {
+      mount.innerHTML = "";
+
+      const startIndex = page * monthsPerPage;
+      const slice = allMonths.slice(startIndex, startIndex + monthsPerPage);
+
+      slice.forEach(({ y, m }) => mount.appendChild(renderMonth(y, m)));
+
+      const rangeEl = document.querySelector("[data-cal-range]");
+      if (rangeEl && slice.length) {
+        const a = slice[0];
+        const b = slice[slice.length - 1];
+        rangeEl.textContent = `${monthNames[a.m]} ${a.y} – ${monthNames[b.m]} ${b.y}`;
+      }
+
+      const prevBtn = document.querySelector("[data-cal-prev]");
+      const nextBtn = document.querySelector("[data-cal-next]");
+      if (prevBtn) prevBtn.disabled = page === 0;
+      if (nextBtn) nextBtn.disabled = startIndex + monthsPerPage >= allMonths.length;
+    }
+
+    document.querySelector("[data-cal-prev]")?.addEventListener("click", () => {
+      page = Math.max(0, page - 1);
+      renderPage();
+    });
+
+    document.querySelector("[data-cal-next]")?.addEventListener("click", () => {
+      const maxPage = Math.ceil(allMonths.length / monthsPerPage) - 1;
+      page = Math.min(maxPage, page + 1);
+      renderPage();
+    });
+
+    document.addEventListener("click", (e) => {
+      const inside = e.target.closest?.(".cal-month, .cal__controls, .cal__legend");
+      if (!inside) tip.classList.remove("is-show");
+    });
+
+    renderPage();
+  }
+
+  /* =========================
+     Gallery Lightbox (optional)
+     - Only runs if [data-lightbox] exists
+  ========================= */
+  function initGalleryLightbox() {
+    const lb = document.querySelector("[data-lightbox]");
+    if (!lb) return;
+
+    const img = lb.querySelector(".lightbox__img");
+    const cap = lb.querySelector(".lightbox__cap");
+    const closeBtn = lb.querySelector(".lightbox__close");
+
+    const open = (src, caption) => {
+      img.src = src;
+      img.alt = caption || "Gallery image";
+      cap.textContent = caption || "";
+      lb.hidden = false;
+      document.body.style.overflow = "hidden";
+    };
+
+    const close = () => {
+      lb.hidden = true;
+      img.src = "";
+      cap.textContent = "";
+      document.body.style.overflow = "";
+    };
+
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest(".gallery-item");
+      if (!a) return;
+
+      e.preventDefault();
+      open(a.getAttribute("href"), a.getAttribute("data-caption") || "");
+    });
+
+    closeBtn?.addEventListener("click", close);
+    lb.addEventListener("click", (e) => { if (e.target === lb) close(); });
+    document.addEventListener("keydown", (e) => { if (!lb.hidden && e.key === "Escape") close(); });
+  }
+
+  /* =========================
      Boot
   ========================= */
   window.addEventListener("DOMContentLoaded", async () => {
@@ -376,5 +705,7 @@
     initBackToTop();
     await initCarouselFromJSON();
     initAjaxForms();
+    initAcademicCalendar();
+    initGalleryLightbox();
   });
 })();

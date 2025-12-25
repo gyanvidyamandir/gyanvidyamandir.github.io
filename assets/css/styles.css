@@ -3073,3 +3073,461 @@ button.btn{
   background: rgba(59, 130, 246, .10);
 }
 
+/* ===== Back to top – remove box styling ===== */
+.back-to-top {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.back-to-top:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* Footer: remove bullets */
+.footer__col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer__col li {
+  padding: 0;
+  margin: 0 0 10px;
+}
+
+/* Footer Back to Top – force remove button styles */
+.footer-bottom .back-to-top,
+.footer-bottom a.back-to-top {
+  all: unset;                 /* reset everything */
+  cursor: pointer;
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+}
+
+.footer-bottom .back-to-top:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* =========================
+   FOOTER LINKS: consistent alignment (all columns)
+========================= */
+
+/* If any column uses UL/LI, remove default spacing */
+.footer__col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer__col li {
+  margin: 0;          /* remove browser default */
+  padding: 0;
+}
+
+/* Make every footer link behave same */
+.footer__col a {
+  display: block;          /* forces perfect vertical alignment */
+  padding: 8px 0;          /* consistent spacing */
+  margin: 0;               /* no extra offset */
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+/* Optional: keep hover style clean */
+.footer__col a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   Interactive Academic Calendar
+========================= */
+.cal { position: relative; overflow: hidden; }
+.cal__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.cal__legend { display: flex; flex-wrap: wrap; gap: 10px; }
+.cal-pill{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 6px 10px; border-radius: 999px;
+  font-weight: 800; font-size: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.7);
+}
+
+/* category colors */
+:root{
+  --cal-term: #2b78ff;
+  --cal-exam: #ff3b5c;
+  --cal-ptm:  #7a3cff;
+  --cal-event:#16a34a;
+  --cal-holiday:#f59e0b;
+}
+
+.cal-pill--term{ color: var(--cal-term); }
+.cal-pill--exam{ color: var(--cal-exam); }
+.cal-pill--ptm{ color: var(--cal-ptm); }
+.cal-pill--event{ color: var(--cal-event); }
+.cal-pill--holiday{ color: var(--cal-holiday); }
+
+.cal__controls{
+  display:flex; align-items:center; gap:10px; flex-wrap: wrap;
+}
+.cal__btn{ padding: 10px 12px; }
+.cal__range{ font-weight: 800; opacity: .85; }
+
+.cal__mount{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 980px){
+  .cal__mount{ grid-template-columns: 1fr; }
+}
+
+.cal-month{
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 18px;
+  background: rgba(255,255,255,.55);
+  overflow: hidden;
+}
+
+.cal-month__head{
+  padding: 12px 14px;
+  display:flex; align-items: baseline; justify-content: space-between;
+  gap: 10px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.cal-month__title{ font-weight: 900; font-size: 18px; }
+.cal-month__meta{ font-size: 12px; opacity: .75; font-weight: 700; }
+
+.cal-grid{
+  padding: 12px 12px 14px;
+}
+
+.cal-dow{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 900;
+  opacity: .65;
+}
+.cal-dow span{ text-align:center; }
+
+.cal-days{
+  display:grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.cal-day{
+  position: relative;
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(255,255,255,.65);
+  display:flex;
+  align-items:flex-start;
+  justify-content:flex-start;
+  padding: 8px 8px 10px;
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.cal-day.is-empty{
+  border: 1px dashed rgba(0,0,0,.10);
+  background: rgba(255,255,255,.35);
+}
+
+.cal-day__num{ opacity: .85; }
+
+.cal-badges{
+  position:absolute;
+  left: 8px;
+  bottom: 6px;
+  display:flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cal-dot{
+  width: 9px; height: 9px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 2px rgba(255,255,255,.75);
+}
+
+/* dot colors */
+.cal-dot--term{ background: var(--cal-term); }
+.cal-dot--exam{ background: var(--cal-exam); }
+.cal-dot--ptm{ background: var(--cal-ptm); }
+.cal-dot--event{ background: var(--cal-event); }
+.cal-dot--holiday{ background: var(--cal-holiday); }
+
+/* hover target */
+.cal-day.has-events{
+  cursor: help;
+  outline: none;
+}
+.cal-day.has-events:hover{
+  border-color: rgba(0,0,0,.14);
+  transform: translateY(-1px);
+}
+.cal-day{ transition: transform .12s ease, border-color .12s ease; }
+
+/* tooltip */
+.cal-tip{
+  position: fixed;
+  z-index: 9999;
+  max-width: 280px;
+  border-radius: 14px;
+  padding: 10px 12px;
+  background: rgba(15, 18, 28, .92);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.14);
+  box-shadow: 0 18px 50px rgba(0,0,0,.25);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .12s ease, transform .12s ease;
+}
+
+.cal-tip.is-show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cal-tip__date{ font-weight: 900; margin-bottom: 6px; }
+.cal-tip__item{ font-size: 13px; line-height: 1.25; opacity: .95; margin: 4px 0; }
+.cal-tip__tag{
+  display:inline-flex; align-items:center; gap: 6px;
+  font-weight: 900;
+}
+.cal-tip__swatch{
+  width: 10px; height: 10px; border-radius: 999px;
+  display:inline-block;
+}
+
+.cal__note{ margin-top: 12px; }
+
+.cal__mount{
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 980px){
+  .cal__mount{ grid-template-columns: 1fr; }
+}
+
+/* =========================
+   Notices (Eye-catching)
+========================= */
+.notices { display: grid; gap: 18px; }
+
+/* Pinned card */
+.notice--pinned{
+  position: relative;
+  padding: 22px;
+  border-radius: 22px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: linear-gradient(135deg, rgba(255, 204, 0, .18), rgba(255,255,255,.85));
+  box-shadow: 0 20px 40px rgba(0,0,0,.12);
+  overflow: hidden;
+}
+
+.notice--pinned::after{
+  content:"";
+  position:absolute;
+  inset:-40px -60px auto auto;
+  width:180px; height:180px;
+  background: radial-gradient(circle at 30% 30%, rgba(37, 99, 235, .25), transparent 60%);
+  filter: blur(2px);
+  pointer-events:none;
+}
+
+.notice__top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom: 10px;
+}
+
+.notice__pin{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight: 900;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.08);
+}
+
+.notice__actions{ margin-top: 12px; }
+.btn--sm{ padding: 10px 14px; font-size: 13px; border-radius: 14px; }
+
+/* Notice cards */
+.notice{
+  --accent: rgba(0,0,0,.12);
+  position: relative;
+  padding: 16px 18px 16px 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(0,0,0,.08);
+  box-shadow: 0 12px 28px rgba(0,0,0,.08);
+  transition: transform .16s ease, box-shadow .16s ease;
+  overflow: hidden;
+}
+
+.notice::before{
+  content:"";
+  position:absolute;
+  left:0; top:0; bottom:0;
+  width:6px;
+  background: var(--accent);
+}
+
+.notice:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 18px 38px rgba(0,0,0,.12);
+}
+
+.notice__title{
+  margin: 6px 0 6px;
+  font-weight: 900;
+  letter-spacing: -.01em;
+}
+
+.notice__text{
+  font-size: 14px;
+  opacity: .9;
+  margin: 0;
+}
+
+.notice__meta{
+  font-size: 12px;
+  opacity: .65;
+}
+
+/* Tags (chips) */
+.notice__tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.85);
+}
+
+.notice__tag--exam{ background: rgba(255,59,92,.12); }
+.notice__tag--ptm{ background: rgba(122,60,255,.12); }
+.notice__tag--holiday{ background: rgba(245,158,11,.14); }
+.notice__tag--general{ background: rgba(0,0,0,.06); }
+
+/* Accent colors per notice type */
+.notice--exam{ --accent: rgba(255,59,92,.65); }
+.notice--ptm{ --accent: rgba(122,60,255,.65); }
+.notice--holiday{ --accent: rgba(245,158,11,.70); }
+.notice--general{ --accent: rgba(0,0,0,.25); }
+
+.notice-list{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 820px){
+  .notice-list{ grid-template-columns: 1fr; }
+  .notice__top{ flex-direction: column; align-items: flex-start; }
+}
+
+/* =========================================================
+   GALLERY — Approach A (FIXED & RELIABLE)
+========================================================= */
+
+.gallery-wall{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:14px;
+}
+
+/* anchor card */
+.gallery-item{
+  position:relative;
+  display:block;
+  width:100%;
+  min-height:260px;
+  border-radius:22px;
+  overflow:hidden;
+  background:none !important;   /* kills grey placeholder */
+  isolation:isolate;
+  text-decoration:none;
+}
+
+/* IMAGE LAYER (this is the magic) */
+.gallery-item::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:var(--img);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  z-index:0;
+  transform:scale(1.01);
+}
+
+/* DARK GRADIENT */
+.gallery-item::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0) 60%);
+  z-index:1;
+}
+
+/* CAPTION */
+.gallery-item__cap{
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:10px;
+  z-index:2;
+  color:#fff;
+  font-weight:800;
+  font-size:13px;
+  text-shadow:0 10px 24px rgba(0,0,0,.45);
+}
+
+/* HOVER */
+.gallery-item:hover::before{ transform:scale(1.08); }
+.gallery-item:hover::after{ opacity:.95; }
+
+/* RESPONSIVE */
+@media (max-width:900px){
+  .gallery-wall{ grid-template-columns:repeat(2,1fr); }
+}
+@media (max-width:520px){
+  .gallery-wall{ grid-template-columns:1fr; }
+  .gallery-item{ min-height:220px; }
+}
