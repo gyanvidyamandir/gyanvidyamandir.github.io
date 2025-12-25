@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link rel="icon" type="image/png" href="assets/img/favicon.svg">
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
   <title>Gyan Vidya Mandir, Wadi</title>
 
   <!-- Better SEO description (clear + specific) -->
@@ -58,19 +58,22 @@
             </h1>
 
             <p class="hero__sub" data-i18n="home.hero_sub">
-              At Gyan Vidya Mandir, we build strong basics in reading, writing, and mathematics—so students learn with
+              At Gyan Vidya Mandir, we build strong basics in reading, writing, and mathematics so students learn with
               clarity and confidence.
               We support every child with structured teaching, regular practice, and values that shape discipline,
               respect, and responsibility.
             </p>
 
-            <!-- New: quick trust highlights -->
-            <div class="chips reveal" aria-label="Key highlights">
-              <span data-i18n="home.chip1">Safe & supportive campus</span>
-              <span data-i18n="home.chip2">Practice-first learning</span>
-              <span data-i18n="home.chip3">Regular assessments</span>
-              <span data-i18n="home.chip4">Parent communication</span>
-            </div>
+           <div class="keypoints">
+  <span>Safe & supportive campus</span>
+  <span>Practice-first learning</span>
+  <span>Regular assessments</span>
+  <span>Parent communication</span>
+</div>
+
+
+
+
 
             <div class="hero__actions">
               <a class="btn btn--primary" href="enroll.html" data-i18n="home.cta_enroll">Enroll Today</a>
@@ -79,25 +82,29 @@
           </div>
 
           <!-- Right media: carousel -->
-        <div class="hero__media" aria-label="School highlights">
-          <div class="carousel--hero" data-carousel>
-            <div class="carousel__track" data-carousel-track>
-              <!-- Slides will be inserted by JS (or you can hardcode backgrounds) -->
-              <div class="carousel__slide" style="background-image:url('assets/img/slide1.jpg')"></div>
-              <div class="carousel__slide" style="background-image:url('assets/img/slide2.jpg')"></div>
-              <div class="carousel__slide" style="background-image:url('assets/img/slide3.jpg')"></div>
+          <div class="hero__media" aria-label="School highlights">
+            <div class="carousel--hero" data-carousel>
+              <div class="carousel__track" data-carousel-track>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide1.jpg')"
+                  aria-label="Classroom learning"></div>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide2.jpg')"
+                  aria-label="Campus and activities"></div>
+                <div class="carousel__slide" style="background-image:url('assets/img/slide3.jpg')"
+                  aria-label="Students participating"></div>
+              </div>
+
+              <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Previous slide"
+                data-carousel-prev>‹</button>
+              <button class="carousel__btn carousel__btn--next" type="button" aria-label="Next slide"
+                data-carousel-next>›</button>
+
+              <div class="carousel__dots" data-carousel-dots aria-label="Carousel dots"></div>
             </div>
 
-            <button class="carousel__btn carousel__btn--prev" type="button" aria-label="Previous slide" data-carousel-prev>‹</button>
-            <button class="carousel__btn carousel__btn--next" type="button" aria-label="Next slide" data-carousel-next>›</button>
-
-            <div class="carousel__dots" data-carousel-dots aria-label="Carousel dots"></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
+    </section>
 
     <!-- WHY CHOOSE US -->
     <section class="section section--tint">
@@ -157,7 +164,7 @@
         </div>
 
         <!-- New: a small callout strip -->
-        <div class="cta-strip" style="margin-top:18px;">
+        <div class="cta-strip" style="margin-top:25px;">
           <div>
             <h3 class="cta-strip__title" data-i18n="home.callout_title">Looking for a school that focuses on basics?
             </h3>
@@ -166,7 +173,7 @@
             </p>
           </div>
           <div class="cta-strip__actions">
-            <a class="btn btn--primary" href="contact.html" data-i18n="home.callout_btn1">Schedule a visit</a>
+            <a class="btn btn--primary" href="contact.html"  style="margin-right:12px;"  data-i18n="home.callout_btn1">Schedule a visit</a>
             <a class="btn btn--ghost" href="admissions.html#how" data-i18n="home.callout_btn2">How admissions work</a>
           </div>
         </div>
@@ -181,13 +188,13 @@
           <div class="band__media" style="background-image:url('assets/img/campus.jpg')" aria-label="Campus"></div>
 
           <div class="band__copy">
-            <div class="eyebrow" data-i18n="home.campus_eyebrow">Campus & learning resources</div>
-            <h2 class="band__title" data-i18n="home.campus_title">A supportive place to learn</h2>
+            <h2 class="section__title"  data-i18n="home.campus_eyebrow">Campus & learning resources</h2>
+            <div class="band__title" data-i18n="home.campus_title">A supportive place to learn</div>
 
             <p class="band__text" data-i18n="home.campus_text">
               We keep the campus simple, clean, and learning-focused. Students get structured classroom teaching,
               reading support,
-              basic digital exposure, and space for sports—so learning stays consistent and confidence grows.
+              basic digital exposure, and space for sports, so learning stays consistent and confidence grows.
             </p>
 
             <div class="features" aria-label="Facilities highlights">
@@ -281,7 +288,7 @@
             </div>
 
             <div class="band__actions">
-              <a class="btn btn--primary btn--small" href="about.html#campus" data-i18n="home.campus_btn">Explore
+              <a class="btn btn--primary btn--small" href="about.html#campus" style="margin-right:12px;"  data-i18n="home.campus_btn">Explore
                 facilities</a>
               <a class="btn btn--small" href="about.html#academics" data-i18n="home.campus_btn2">See academics</a>
             </div>
@@ -324,8 +331,8 @@
           </div>
         </div>
 
-        <div class="band__actions" style="margin-top:16px;">
-          <a class="btn btn--primary" href="admissions.html#how" data-i18n="home.programs_btn1">Admissions process</a>
+        <div class="band__actions">
+          <a class="btn btn--primary" href="admissions.html#how" style="margin-right:12px;" data-i18n="home.programs_btn1">Admissions process</a>
           <a class="btn btn--ghost" href="about.html#overview" data-i18n="home.programs_btn2">About the school</a>
         </div>
       </div>
@@ -367,7 +374,7 @@
         <div class="cta-strip" style="margin-top:18px;">
           
           <div class="cta-strip__actions">
-            <a class="btn btn--primary" href="enroll.html" data-i18n="home.ready_btn1">Enroll Today</a>
+            <a class="btn btn--primary" href="enroll.html" style="margin-right:12px;" data-i18n="home.ready_btn1">Enroll Today</a>
             <a class="btn btn--ghost" href="admissions.html#how" data-i18n="home.ready_btn2">Admissions Info</a>
           </div>
         </div>
