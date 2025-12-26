@@ -1,19 +1,21 @@
 /* =========================================================
-   app.js (FINAL)
+   app.js (FINAL + FAST GT CACHE)
    - Prevent flicker: hide page until partials load
    - HTML partial includes
    - Mobile nav (hamburger only)
    - Footer year
    - Hero carousel (assets/data/photos.json)
-   - Language segmented toggle
+   - Language segmented toggle (persist across pages, NO refresh loop)
+   - Google Translate speed-up:
+       ✅ Instant render from sessionStorage cache (per page + lang)
+       ✅ Auto-saves cache after translation completes
    - Back to top (ultra robust)
    - FormSubmit (AJAX, inline flash, phone validation) for any form[data-ajax="true"]
-   - Interactive Academic Calendar (2 months view) March 2025 → April 2026
+   - Interactive Academic Calendar (desktop 2 months, phone 1 month)
    - Gallery Lightbox (optional; if markup exists)
 ========================================================= */
 
 (() => {
-  // ✅ Prevent flicker while header/footer are injected
   document.documentElement.classList.add("is-loading");
 
   /* =========================
@@ -72,7 +74,79 @@
   }
 
   /* =========================
-     Language segmented toggle
+     FAST GT CACHE (main only)
+     - Stores translated <main> per page+lang in sessionStorage
+     - Instantly applies cached version on next visit (same tab)
+  ========================= */
+  const LANG_KEY = "gvm_lang";
+
+  function getLang() {
+    return (localStorage.getItem(LANG_KEY) || "en").toLowerCase();
+  }
+
+  function cacheKeyFor(lang) {
+    // pathname is enough for static site
+    return `gvm_gt_cache:${lang}:${location.pathname}`;
+  }
+
+  function applyCachedTranslationIfAny() {
+    const lang = getLang();
+    if (lang === "en") return false;
+
+    const key = cacheKeyFor(lang);
+    const cached = sessionStorage.getItem(key);
+    if (!cached) return false;
+
+    const main = document.querySelector("main");
+    if (!main) return false;
+
+    // Replace main immediately (instant render)
+    main.outerHTML = cached;
+    return true;
+  }
+
+  function saveTranslationCache() {
+    const lang = getLang();
+    if (lang === "en") return;
+
+    const main = document.querySelector("main");
+    if (!main) return;
+
+    sessionStorage.setItem(cacheKeyFor(lang), main.outerHTML);
+  }
+
+  // Wait until GT has done something (best-effort), then cache
+  async function waitAndCacheTranslation() {
+    const lang = getLang();
+    if (lang === "en") return;
+
+    // Give GT some time to mutate DOM; stop early if html has "translated-ltr/rtl"
+    const start = Date.now();
+    const maxMs = 6000;
+
+    await new Promise((resolve) => {
+      const tick = () => {
+        const cls = document.documentElement.className || "";
+        const looksTranslated =
+          cls.includes("translated-") ||
+          document.documentElement.lang?.toLowerCase() === lang;
+
+        if (looksTranslated) return resolve();
+
+        if (Date.now() - start > maxMs) return resolve();
+        setTimeout(tick, 250);
+      };
+      tick();
+    });
+
+    // Cache whatever is currently rendered
+    saveTranslationCache();
+  }
+
+  /* =========================
+     Language segmented toggle (persist, no loop)
+     - Only calls setLang() on user click
+     - Uses cache on load for speed (if lang != en)
   ========================= */
   function initLangToggle() {
     const btns = document.querySelectorAll(".lang-seg__btn");
@@ -86,19 +160,38 @@
       });
     };
 
-    const saved = (localStorage.getItem("gvm_lang") || "en").toLowerCase();
+    const saved = getLang();
     setActiveUI(saved);
 
+    // Loop guard (prevents double run on mobile taps)
+    const canRun = () => {
+      const now = Date.now();
+      const last = Number(sessionStorage.getItem("__gvm_lang_last__") || "0");
+      if (now - last < 800) return false;
+      sessionStorage.setItem("__gvm_lang_last__", String(now));
+      return true;
+    };
+
     btns.forEach((btn) => {
-      btn.addEventListener("click", async () => {
+      btn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
         const lang = (btn.getAttribute("data-lang") || "en").toLowerCase();
+        const current = getLang();
+        if (lang === current) return;
+        if (!canRun()) return;
+
+        localStorage.setItem(LANG_KEY, lang);
         setActiveUI(lang);
 
         if (window.GVM_I18N && typeof window.GVM_I18N.setLang === "function") {
-          await window.GVM_I18N.setLang(lang);
-        } else {
-          localStorage.setItem("gvm_lang", lang);
-          if (lang === "en") location.reload();
+          try {
+            await window.GVM_I18N.setLang(lang);
+            // After switching lang, cache this page result too
+            await waitAndCacheTranslation();
+          } catch (err) {
+            console.error("GVM_I18N.setLang failed:", err);
+          }
         }
       });
     });
@@ -237,10 +330,6 @@
 
   /* =========================
      FormSubmit AJAX (one source of truth)
-     - Works for any form[data-ajax="true"]
-     - Shows inline flash in [data-form-flash]
-     - Prevents redirect by using fetch + Accept: application/json
-     - Validates phone if input has data-phone OR name="phone"
   ========================= */
   function initAjaxForms() {
     function onlyDigits(str) {
@@ -264,7 +353,7 @@
       const flash = getFlash(form);
       if (!flash) return;
       flash.textContent = msg;
-      flash.setAttribute("data-type", type); // success | error | info
+      flash.setAttribute("data-type", type);
       flash.classList.add("is-show");
     }
 
@@ -290,11 +379,9 @@
       e.preventDefault();
       clearFlash(form);
 
-      // Honeypot (_gotcha)
       const gotcha = form.querySelector('input[name="_gotcha"]');
       if (gotcha && gotcha.value.trim() !== "") return;
 
-      // Phone validation (if field exists)
       const phoneInput =
         form.querySelector("[data-phone]") ||
         form.querySelector('input[name="phone"]') ||
@@ -351,7 +438,6 @@
       }
     });
 
-    // Clear error when typing again
     document.addEventListener("input", (e) => {
       const el = e.target;
       if (!(el instanceof HTMLElement)) return;
@@ -367,296 +453,268 @@
   }
 
   /* =========================
-   Interactive Academic Calendar
-   - March 2025 → April 2026
-   - Desktop: shows current month + next month (2 months)
-   - Phone: shows only current month (1 month)
-   - Prev/Next moves by 1 month
-========================= */
-function initAcademicCalendar() {
-  const mount = document.getElementById("academicCalendar");
-  if (!mount) return;
+     Interactive Academic Calendar
+     - Desktop: 2 months, Phone: 1 month
+     - Prev/Next moves by 1 month
+  ========================= */
+  function initAcademicCalendar() {
+    const mount = document.getElementById("academicCalendar");
+    if (!mount) return;
 
-  // ✅ EDIT EVENTS ANYTIME (YYYY-MM-DD)
-  const events = [
-    { date: "2025-03-25", type: "term", title: "New session planning / orientation week (tentative)" },
-    { date: "2025-04-01", type: "term", title: "Academic Session Begins (tentative)" },
+    const events = [
+      { date: "2025-03-25", type: "term", title: "New session planning / orientation week (tentative)" },
+      { date: "2025-04-01", type: "term", title: "Academic Session Begins (tentative)" },
+      { date: "2025-04-14", type: "holiday", title: "Ambedkar Jayanti (holiday) (tentative)" },
+      { date: "2025-08-15", type: "holiday", title: "Independence Day (holiday)" },
+      { date: "2025-10-02", type: "holiday", title: "Gandhi Jayanti (holiday)" },
+      { date: "2025-12-25", type: "holiday", title: "Christmas (holiday)" },
+      { date: "2026-01-26", type: "holiday", title: "Republic Day (holiday)" },
+      { date: "2026-03-14", type: "holiday", title: "Holi (holiday) (tentative)" },
+      { date: "2025-06-21", type: "event", title: "International Yoga Day activities" },
+      { date: "2025-08-10", type: "event", title: "Independence Day rehearsal week" },
+      { date: "2026-01-20", type: "event", title: "Annual Day / Cultural Program week (tentative)" },
+      { date: "2025-05-25", type: "ptm", title: "PTM – Progress discussion (tentative)" },
+      { date: "2025-09-28", type: "ptm", title: "PTM – Half-year results discussion (tentative)" },
+      { date: "2025-12-14", type: "ptm", title: "PTM – Term 2 progress (tentative)" },
+      { date: "2026-03-22", type: "ptm", title: "PTM – Final results discussion (tentative)" },
+      { date: "2025-06-10", type: "exam", title: "Unit Test 1 (UT-1) begins (tentative)" },
+      { date: "2025-06-15", type: "exam", title: "UT-1 ends (tentative)" },
+      { date: "2025-08-26", type: "exam", title: "Unit Test 2 (UT-2) begins (tentative)" },
+      { date: "2025-08-31", type: "exam", title: "UT-2 ends (tentative)" },
+      { date: "2025-09-16", type: "exam", title: "Half-Yearly Exams begin (tentative)" },
+      { date: "2025-09-28", type: "exam", title: "Half-Yearly Exams end (tentative)" },
+      { date: "2025-11-18", type: "exam", title: "Unit Test 3 (UT-3) begins (tentative)" },
+      { date: "2025-11-23", type: "exam", title: "UT-3 ends (tentative)" },
+      { date: "2026-02-10", type: "exam", title: "Final Exams begin (tentative)" },
+      { date: "2026-02-22", type: "exam", title: "Final Exams end (tentative)" },
+      { date: "2026-04-05", type: "term", title: "Session closes / preparation for next session (tentative)" },
+    ];
 
-    { date: "2025-04-14", type: "holiday", title: "Ambedkar Jayanti (holiday) (tentative)" },
-    { date: "2025-08-15", type: "holiday", title: "Independence Day (holiday)" },
-    { date: "2025-10-02", type: "holiday", title: "Gandhi Jayanti (holiday)" },
-    { date: "2025-12-25", type: "holiday", title: "Christmas (holiday)" },
-    { date: "2026-01-26", type: "holiday", title: "Republic Day (holiday)" },
-    { date: "2026-03-14", type: "holiday", title: "Holi (holiday) (tentative)" },
-
-    { date: "2025-06-21", type: "event", title: "International Yoga Day activities" },
-    { date: "2025-08-10", type: "event", title: "Independence Day rehearsal week" },
-    { date: "2026-01-20", type: "event", title: "Annual Day / Cultural Program week (tentative)" },
-
-    { date: "2025-05-25", type: "ptm", title: "PTM – Progress discussion (tentative)" },
-    { date: "2025-09-28", type: "ptm", title: "PTM – Half-year results discussion (tentative)" },
-    { date: "2025-12-14", type: "ptm", title: "PTM – Term 2 progress (tentative)" },
-    { date: "2026-03-22", type: "ptm", title: "PTM – Final results discussion (tentative)" },
-
-    { date: "2025-06-10", type: "exam", title: "Unit Test 1 (UT-1) begins (tentative)" },
-    { date: "2025-06-15", type: "exam", title: "UT-1 ends (tentative)" },
-
-    { date: "2025-08-26", type: "exam", title: "Unit Test 2 (UT-2) begins (tentative)" },
-    { date: "2025-08-31", type: "exam", title: "UT-2 ends (tentative)" },
-
-    { date: "2025-09-16", type: "exam", title: "Half-Yearly Exams begin (tentative)" },
-    { date: "2025-09-28", type: "exam", title: "Half-Yearly Exams end (tentative)" },
-
-    { date: "2025-11-18", type: "exam", title: "Unit Test 3 (UT-3) begins (tentative)" },
-    { date: "2025-11-23", type: "exam", title: "UT-3 ends (tentative)" },
-
-    { date: "2026-02-10", type: "exam", title: "Final Exams begin (tentative)" },
-    { date: "2026-02-22", type: "exam", title: "Final Exams end (tentative)" },
-
-    { date: "2026-04-05", type: "term", title: "Session closes / preparation for next session (tentative)" },
-  ];
-
-  // Map events by YYYY-MM-DD
-  const map = new Map();
-  for (const e of events) {
-    if (!map.has(e.date)) map.set(e.date, []);
-    map.get(e.date).push(e);
-  }
-
-  const monthNames = [
-    "January","February","March","April","May","June",
-    "July","August","September","October","November","December"
-  ];
-  const dow = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-
-  // ✅ Range: March 2025 → April 2026
-  const start = new Date(2025, 2, 1);
-  const end = new Date(2026, 3, 1);
-
-  // ✅ Desktop shows 2 months, phone shows 1 month
-  const isPhone = window.matchMedia("(max-width: 480px)").matches;
-  const monthsPerPage = isPhone ? 1 : 2;
-
-  // Build month list
-  const allMonths = [];
-  {
-    const cur = new Date(start);
-    while (cur <= end) {
-      allMonths.push({ y: cur.getFullYear(), m: cur.getMonth() });
-      cur.setMonth(cur.getMonth() + 1);
-    }
-  }
-
-  // Tooltip
-  let tip = document.querySelector(".cal-tip");
-  if (!tip) {
-    tip = document.createElement("div");
-    tip.className = "cal-tip";
-    tip.innerHTML = `<div class="cal-tip__date"></div><div class="cal-tip__list"></div>`;
-    document.body.appendChild(tip);
-  }
-
-  const typeLabel = (t) => ({
-    term: "Term",
-    exam: "Exams",
-    ptm: "PTM",
-    event: "Event",
-    holiday: "Holiday",
-  }[t] || "Info");
-
-  const typeClass = (t) => ({
-    term: "term",
-    exam: "exam",
-    ptm: "ptm",
-    event: "event",
-    holiday: "holiday",
-  }[t] || "event");
-
-  function fmtDateKey(y, m, d) {
-    const mm = String(m + 1).padStart(2, "0");
-    const dd = String(d).padStart(2, "0");
-    return `${y}-${mm}-${dd}`;
-  }
-
-  function renderMonth(y, m) {
-    const monthWrap = document.createElement("div");
-    monthWrap.className = "cal-month";
-
-    const head = document.createElement("div");
-    head.className = "cal-month__head";
-    head.innerHTML = `<div class="cal-month__title">${monthNames[m]} ${y}</div>`;
-    monthWrap.appendChild(head);
-
-    const grid = document.createElement("div");
-    grid.className = "cal-grid";
-
-    const dowRow = document.createElement("div");
-    dowRow.className = "cal-dow";
-    dowRow.innerHTML = dow.map(d => `<span>${d}</span>`).join("");
-    grid.appendChild(dowRow);
-
-    const days = document.createElement("div");
-    days.className = "cal-days";
-
-    const first = new Date(y, m, 1);
-    const last = new Date(y, m + 1, 0);
-    const totalDays = last.getDate();
-    const firstDow = (first.getDay() + 6) % 7; // Mon=0
-
-    for (let i = 0; i < firstDow; i++) {
-      const empty = document.createElement("div");
-      empty.className = "cal-day is-empty";
-      days.appendChild(empty);
+    const map = new Map();
+    for (const e of events) {
+      if (!map.has(e.date)) map.set(e.date, []);
+      map.get(e.date).push(e);
     }
 
-    for (let d = 1; d <= totalDays; d++) {
-      const key = fmtDateKey(y, m, d);
-      const evs = map.get(key) || [];
+    const monthNames = [
+      "January","February","March","April","May","June",
+      "July","August","September","October","November","December"
+    ];
+    const dow = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 
-      const cell = document.createElement("div");
-      cell.className = "cal-day";
-      cell.tabIndex = 0;
-      cell.innerHTML = `<div class="cal-day__num">${d}</div>`;
+    const start = new Date(2025, 2, 1);
+    const end = new Date(2026, 3, 1);
 
-      if (evs.length) {
-        cell.classList.add("has-events");
+    const isPhone = window.matchMedia("(max-width: 480px)").matches;
+    const monthsPerPage = isPhone ? 1 : 2;
 
-        const badges = document.createElement("div");
-        badges.className = "cal-badges";
+    const allMonths = [];
+    {
+      const cur = new Date(start);
+      while (cur <= end) {
+        allMonths.push({ y: cur.getFullYear(), m: cur.getMonth() });
+        cur.setMonth(cur.getMonth() + 1);
+      }
+    }
 
-        const uniq = [...new Set(evs.map(e => e.type))].slice(0, 4);
-        uniq.forEach((t) => {
-          const dot = document.createElement("span");
-          dot.className = `cal-dot cal-dot--${typeClass(t)}`;
-          badges.appendChild(dot);
-        });
+    let tip = document.querySelector(".cal-tip");
+    if (!tip) {
+      tip = document.createElement("div");
+      tip.className = "cal-tip";
+      tip.innerHTML = `<div class="cal-tip__date"></div><div class="cal-tip__list"></div>`;
+      document.body.appendChild(tip);
+    }
 
-        cell.appendChild(badges);
+    const typeLabel = (t) => ({
+      term: "Term",
+      exam: "Exams",
+      ptm: "PTM",
+      event: "Event",
+      holiday: "Holiday",
+    }[t] || "Info");
 
-        const showTip = (clientX, clientY) => {
-          tip.querySelector(".cal-tip__date").textContent = `${d} ${monthNames[m]} ${y}`;
-          tip.querySelector(".cal-tip__list").innerHTML = evs.map((e) => `
-            <div class="cal-tip__item">
-              <span class="cal-tip__tag">
-                <span class="cal-tip__swatch" style="background: var(--cal-${typeClass(e.type)});"></span>
-                ${typeLabel(e.type)}:
-              </span>
-              ${e.title}
-            </div>
-          `).join("");
+    const typeClass = (t) => ({
+      term: "term",
+      exam: "exam",
+      ptm: "ptm",
+      event: "event",
+      holiday: "holiday",
+    }[t] || "event");
 
-          const pad = 14;
-          tip.classList.add("is-show");
+    function fmtDateKey(y, m, d) {
+      const mm = String(m + 1).padStart(2, "0");
+      const dd = String(d).padStart(2, "0");
+      return `${y}-${mm}-${dd}`;
+    }
 
-          const tw = tip.offsetWidth;
-          const th = tip.offsetHeight;
+    function renderMonth(y, m) {
+      const monthWrap = document.createElement("div");
+      monthWrap.className = "cal-month";
 
-          let x = clientX + pad;
-          let yPos = clientY + pad;
+      const head = document.createElement("div");
+      head.className = "cal-month__head";
+      head.innerHTML = `<div class="cal-month__title">${monthNames[m]} ${y}</div>`;
+      monthWrap.appendChild(head);
 
-          if (x + tw > window.innerWidth - 10) x = clientX - tw - pad;
-          if (yPos + th > window.innerHeight - 10) yPos = clientY - th - pad;
+      const grid = document.createElement("div");
+      grid.className = "cal-grid";
 
-          tip.style.left = `${Math.max(10, x)}px`;
-          tip.style.top = `${Math.max(10, yPos)}px`;
-        };
+      const dowRow = document.createElement("div");
+      dowRow.className = "cal-dow";
+      dowRow.innerHTML = dow.map(d => `<span>${d}</span>`).join("");
+      grid.appendChild(dowRow);
 
-        const hideTip = () => tip.classList.remove("is-show");
+      const days = document.createElement("div");
+      days.className = "cal-days";
 
-        cell.addEventListener("mousemove", (e) => showTip(e.clientX, e.clientY));
-        cell.addEventListener("mouseleave", hideTip);
+      const first = new Date(y, m, 1);
+      const last = new Date(y, m + 1, 0);
+      const totalDays = last.getDate();
+      const firstDow = (first.getDay() + 6) % 7;
 
-        cell.addEventListener("focus", () => {
-          const r = cell.getBoundingClientRect();
-          showTip(r.left + r.width / 2, r.top + r.height / 2);
-        });
-        cell.addEventListener("blur", hideTip);
-
-        cell.addEventListener("click", (e) => {
-          if (tip.classList.contains("is-show")) hideTip();
-          else showTip(e.clientX || 20, e.clientY || 20);
-        });
+      for (let i = 0; i < firstDow; i++) {
+        const empty = document.createElement("div");
+        empty.className = "cal-day is-empty";
+        days.appendChild(empty);
       }
 
-      days.appendChild(cell);
+      for (let d = 1; d <= totalDays; d++) {
+        const key = fmtDateKey(y, m, d);
+        const evs = map.get(key) || [];
+
+        const cell = document.createElement("div");
+        cell.className = "cal-day";
+        cell.tabIndex = 0;
+        cell.innerHTML = `<div class="cal-day__num">${d}</div>`;
+
+        if (evs.length) {
+          cell.classList.add("has-events");
+
+          const badges = document.createElement("div");
+          badges.className = "cal-badges";
+
+          const uniq = [...new Set(evs.map(e => e.type))].slice(0, 4);
+          uniq.forEach((t) => {
+            const dot = document.createElement("span");
+            dot.className = `cal-dot cal-dot--${typeClass(t)}`;
+            badges.appendChild(dot);
+          });
+
+          cell.appendChild(badges);
+
+          const showTip = (clientX, clientY) => {
+            tip.querySelector(".cal-tip__date").textContent = `${d} ${monthNames[m]} ${y}`;
+            tip.querySelector(".cal-tip__list").innerHTML = evs.map((e) => `
+              <div class="cal-tip__item">
+                <span class="cal-tip__tag">
+                  <span class="cal-tip__swatch" style="background: var(--cal-${typeClass(e.type)});"></span>
+                  ${typeLabel(e.type)}:
+                </span>
+                ${e.title}
+              </div>
+            `).join("");
+
+            const pad = 14;
+            tip.classList.add("is-show");
+
+            const tw = tip.offsetWidth;
+            const th = tip.offsetHeight;
+
+            let x = clientX + pad;
+            let yPos = clientY + pad;
+
+            if (x + tw > window.innerWidth - 10) x = clientX - tw - pad;
+            if (yPos + th > window.innerHeight - 10) yPos = clientY - th - pad;
+
+            tip.style.left = `${Math.max(10, x)}px`;
+            tip.style.top = `${Math.max(10, yPos)}px`;
+          };
+
+          const hideTip = () => tip.classList.remove("is-show");
+
+          cell.addEventListener("mousemove", (e) => showTip(e.clientX, e.clientY));
+          cell.addEventListener("mouseleave", hideTip);
+
+          cell.addEventListener("focus", () => {
+            const r = cell.getBoundingClientRect();
+            showTip(r.left + r.width / 2, r.top + r.height / 2);
+          });
+          cell.addEventListener("blur", hideTip);
+
+          cell.addEventListener("click", (e) => {
+            if (tip.classList.contains("is-show")) hideTip();
+            else showTip(e.clientX || 20, e.clientY || 20);
+          });
+        }
+
+        days.appendChild(cell);
+      }
+
+      grid.appendChild(days);
+      monthWrap.appendChild(grid);
+      return monthWrap;
     }
 
-    grid.appendChild(days);
-    monthWrap.appendChild(grid);
-    return monthWrap;
-  }
+    // page = start month index
+    let page = 0;
+    {
+      const now = new Date();
+      const idx = allMonths.findIndex(({ y, m }) => y === now.getFullYear() && m === now.getMonth());
+      const maxStart = Math.max(0, allMonths.length - monthsPerPage);
 
-  // ✅ page = start month INDEX (not page number)
-  let page = 0;
-  {
-    const now = new Date();
-    const idx = allMonths.findIndex(({ y, m }) => y === now.getFullYear() && m === now.getMonth());
-
-    const maxStart = Math.max(0, allMonths.length - monthsPerPage);
-
-    if (idx !== -1) {
-      page = Math.min(idx, maxStart); // current month + next month
-    } else {
-      const rangeStart = new Date(allMonths[0].y, allMonths[0].m, 1);
-      page = now < rangeStart ? 0 : maxStart;
+      if (idx !== -1) page = Math.min(idx, maxStart);
+      else {
+        const rangeStart = new Date(allMonths[0].y, allMonths[0].m, 1);
+        page = now < rangeStart ? 0 : maxStart;
+      }
     }
-  }
 
-  function renderPage() {
-    mount.innerHTML = "";
+    function renderPage() {
+      mount.innerHTML = "";
 
-    const startIndex = page; // ✅ month index
-    const slice = allMonths.slice(startIndex, startIndex + monthsPerPage);
+      const slice = allMonths.slice(page, page + monthsPerPage);
+      slice.forEach(({ y, m }) => mount.appendChild(renderMonth(y, m)));
 
-    slice.forEach(({ y, m }) => mount.appendChild(renderMonth(y, m)));
+      const rangeEl = document.querySelector("[data-cal-range]");
+      if (rangeEl && slice.length) {
+        if (monthsPerPage === 1) {
+          rangeEl.textContent = `${monthNames[slice[0].m]} ${slice[0].y}`;
+        } else {
+          const a = slice[0];
+          const b = slice[slice.length - 1];
+          rangeEl.textContent = `${monthNames[a.m]} ${a.y} – ${monthNames[b.m]} ${b.y}`;
+        }
+      }
 
-    const rangeEl = document.querySelector("[data-cal-range]");
-    if (rangeEl && slice.length) {
-  const a = slice[0];
-  const b = slice[slice.length - 1];
+      const prevBtn = document.querySelector("[data-cal-prev]");
+      const nextBtn = document.querySelector("[data-cal-next]");
+      const maxStart = Math.max(0, allMonths.length - monthsPerPage);
 
-  // ✅ Phone (1 month): show "December 2025"
-  if (monthsPerPage === 1 || (a.m === b.m && a.y === b.y)) {
-    rangeEl.textContent = `${monthNames[a.m]} ${a.y}`;
-  } else {
-    // ✅ Desktop (2 months): show "December 2025 – January 2026"
-    rangeEl.textContent = `${monthNames[a.m]} ${a.y} – ${monthNames[b.m]} ${b.y}`;
-  }
-}
+      if (prevBtn) prevBtn.disabled = page === 0;
+      if (nextBtn) nextBtn.disabled = page >= maxStart;
+    }
 
+    document.querySelector("[data-cal-prev]")?.addEventListener("click", () => {
+      page = Math.max(0, page - 1);
+      renderPage();
+    });
 
-    const prevBtn = document.querySelector("[data-cal-prev]");
-    const nextBtn = document.querySelector("[data-cal-next]");
-    const maxStart = Math.max(0, allMonths.length - monthsPerPage);
+    document.querySelector("[data-cal-next]")?.addEventListener("click", () => {
+      const maxStart = Math.max(0, allMonths.length - monthsPerPage);
+      page = Math.min(maxStart, page + 1);
+      renderPage();
+    });
 
-    if (prevBtn) prevBtn.disabled = page === 0;
-    if (nextBtn) nextBtn.disabled = page >= maxStart;
-  }
+    document.addEventListener("click", (e) => {
+      const inside = e.target.closest?.(".cal-month, .cal__controls, .cal__legend");
+      if (!inside) tip.classList.remove("is-show");
+    });
 
-  // Prev/Next move by 1 month (best UX)
-  document.querySelector("[data-cal-prev]")?.addEventListener("click", () => {
-    page = Math.max(0, page - 1);
     renderPage();
-  });
-
-  document.querySelector("[data-cal-next]")?.addEventListener("click", () => {
-    const maxStart = Math.max(0, allMonths.length - monthsPerPage);
-    page = Math.min(maxStart, page + 1);
-    renderPage();
-  });
-
-  document.addEventListener("click", (e) => {
-    const inside = e.target.closest?.(".cal-month, .cal__controls, .cal__legend");
-    if (!inside) tip.classList.remove("is-show");
-  });
-
-  renderPage();
-}
-
+  }
 
   /* =========================
      Gallery Lightbox (optional)
-     - Only runs if [data-lightbox] exists
   ========================= */
   function initGalleryLightbox() {
     const lb = document.querySelector("[data-lightbox]");
@@ -700,6 +758,9 @@ function initAcademicCalendar() {
   window.addEventListener("DOMContentLoaded", async () => {
     await includePartials();
 
+    // ✅ apply cached translated main immediately (if non-EN)
+    applyCachedTranslationIfAny();
+
     document.documentElement.classList.remove("is-loading");
     document.documentElement.classList.add("is-ready");
 
@@ -711,5 +772,9 @@ function initAcademicCalendar() {
     initAjaxForms();
     initAcademicCalendar();
     initGalleryLightbox();
+
+    // ✅ after GT finishes on this page, cache it for next time
+    // (If you are using GT for hi/mr, this makes revisits instant.)
+    waitAndCacheTranslation().catch(() => {});
   });
 })();

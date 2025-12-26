@@ -7,6 +7,11 @@
   <title>Contact • Gyan Vidya Mandir</title>
   <meta name="description" content="Contact Gyan Vidya Mandir, Wadi." />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://translate.googleapis.com">
+<link rel="preconnect" href="https://translate.google.com">
+<link rel="dns-prefetch" href="https://translate.googleapis.com">
+<link rel="dns-prefetch" href="https://translate.google.com">
+
 </head>
 <body>
 
@@ -29,18 +34,18 @@
         <div class="card">
           <h2 class="card__title" data-i18n="contact.details_title">School details</h2>
 
-          <p class="card__text"><b>School:</b> <span class="notranslate">Gyan Vidya Mandir, Wadi</span></p>
-          <p class="card__text"><b>Grades:</b> <span class="notranslate">Nursery to Grade 10</span></p>
-          <p class="card__text"><b>Medium:</b> <span class="notranslate">English</span></p>
-          <p class="card__text"><b>Type:</b> <span class="notranslate">Co-educational</span></p>
-          <p class="card__text"><b>Location:</b> <span class="notranslate">Wadi, Nagpur (Gramin), Maharashtra</span></p>
+          <p class="card__text"><b data-i18n="contact.details_school_label">School:</b> <span>Gyan Vidya Mandir, Wadi</span></p>
+          <p class="card__text"><b data-i18n="contact.details_grades_label">Grades:</b> <span data-i18n="contact.details_grades_val">Nursery to Grade 10</span></p>
+          <p class="card__text"><b data-i18n="contact.details_medium_label">Medium:</b> <span data-i18n="contact.details_medium_val">English</span></p>
+          <p class="card__text"><b data-i18n="contact.details_type_label">Type:</b> <span data-i18n="contact.details_type_val">Co-educational</span></p>
+          <p class="card__text"><b data-i18n="contact.details_location_label">Location:</b> <span data-i18n="contact.details_location_val">Wadi, Nagpur (Gramin), Maharashtra</span></p>
         </div>
 
         <div class="card">
           <h2 class="card__title" data-i18n="contact.form_title">Send a message</h2>
 
           <!-- ✅ AJAX submit enabled via JS -->
-          <form class="form notranslate"
+          <form class="form"
                 id="contactForm"
                 method="POST"
                 action="https://formsubmit.co/gyanvidyamandir9@gmail.com"
@@ -55,51 +60,57 @@
             <input type="hidden" name="formType" value="Contact Message" />
             <input type="hidden" name="page" value="contact.html" />
 
-            <label class="sr-only" for="cName">Your Name</label>
+            <label class="sr-only" for="cName" data-i18n="contact.name_label">Your Name</label>
             <input class="input"
                    id="cName"
                    name="name"
                    placeholder="Your Name"
+                   data-i18n-placeholder="contact.name_ph"
                    required />
 
-            <label class="sr-only" for="cPhone">Phone Number</label>
+            <label class="sr-only" for="cPhone" data-i18n="contact.phone_label">Phone Number</label>
             <input class="input"
                    id="cPhone"
                    name="phone"
                    placeholder="Phone Number"
+                   data-i18n-placeholder="contact.phone_ph"
                    inputmode="tel"
                    autocomplete="tel"
                    required />
 
             <!-- ✅ Email optional -->
-            <label class="sr-only" for="cEmail">Email</label>
+            <label class="sr-only" for="cEmail" data-i18n="contact.email_label">Email</label>
             <input class="input"
                    id="cEmail"
                    name="email"
                    type="email"
                    placeholder="Email Address (optional)"
+                   data-i18n-placeholder="contact.email_ph"
                    autocomplete="email" />
 
             <!-- ✅ Related to (required) -->
-            <label class="sr-only" for="cTopic">Related to</label>
+            <label class="sr-only" for="cTopic" data-i18n="contact.topic_label">Related to</label>
             <select class="input" id="cTopic" name="topic" required>
-              <option value="" selected disabled>Related to…</option>
-              <option value="Admissions">Admissions</option>
-              <option value="Fees / Payment">Fees / Payment</option>
-              <option value="Transport">Transport</option>
-              <option value="Academics / Curriculum">Academics / Curriculum</option>
-              <option value="Uniform / Books">Uniform / Books</option>
-              <option value="Documents / Certificates">Documents / Certificates</option>
-              <option value="Events / Activities">Events / Activities</option>
-              <option value="General query">General query</option>
+              <option value="" selected disabled data-i18n="contact.topic_ph">Related to…</option>
+
+              <!-- Optional: translate these too -->
+              <option value="Admissions" data-i18n="contact.topic_admissions">Admissions</option>
+              <option value="Fees / Payment" data-i18n="contact.topic_fees">Fees / Payment</option>
+              <option value="Transport" data-i18n="contact.topic_transport">Transport</option>
+              <option value="Academics / Curriculum" data-i18n="contact.topic_academics">Academics / Curriculum</option>
+              <option value="Uniform / Books" data-i18n="contact.topic_uniform">Uniform / Books</option>
+              <option value="Documents / Certificates" data-i18n="contact.topic_docs">Documents / Certificates</option>
+              <option value="Events / Activities" data-i18n="contact.topic_events">Events / Activities</option>
+              <option value="General query" data-i18n="contact.topic_general">General query</option>
             </select>
 
-            <label class="sr-only" for="cMsg">Your message</label>
+            <label class="sr-only" for="cMsg" data-i18n="contact.message_label">Your message</label>
             <textarea class="input"
                       id="cMsg"
                       name="message"
                       rows="5"
                       placeholder="Your message"
+                      data-i18n-placeholder="contact.message_ph"
                       required></textarea>
 
             <!-- Honeypot -->
@@ -108,9 +119,9 @@
             <!-- ✅ Inline message area (errors + success) -->
             <div class="form-flash" data-form-flash aria-live="polite" aria-atomic="true"></div>
 
-            <button class="btn btn--primary" type="submit">Submit</button>
+            <button class="btn btn--primary" type="submit" data-i18n="contact.submit_btn">Submit</button>
 
-            <p class="fineprint">
+            <p class="fineprint" data-i18n="contact.fineprint">
               We’ll reply within 24–48 hours. Phone helps us call back quickly.
             </p>
           </form>

@@ -4173,3 +4173,61 @@ button.btn{
     display: none !important;
   }
 }
+/* =========================================
+   PHONE: CALENDAR SIDE SPACING & ALIGNMENT
+========================================= */
+@media (max-width: 480px) {
+
+  /* Add breathing room to whole calendar section */
+  #calendar {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* Ensure container doesn't remove padding */
+  #calendar .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Slight inset for the calendar card itself */
+  #calendar .cal {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  /* Month title alignment feels more balanced */
+  .cal-month__title {
+    padding-left: 4px;
+  }
+
+  /* Grid days don't touch edges */
+  .cal-grid {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Force side gutters for the whole Calendar section */
+  #calendar .container{
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Make the card respect the gutters */
+  #calendar .cal{
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  /* Nudge only the "Academic Calendar" heading a bit away from edge */
+  #calendar .section__title{
+    padding-left: 2px;
+  }
+}

@@ -7,12 +7,15 @@
   <title>Enroll Today • Gyan Vidya Mandir</title>
   <meta name="description" content="Enrollment inquiry form for Nursery to Grade 10." />
   <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://translate.googleapis.com">
+<link rel="preconnect" href="https://translate.google.com">
+<link rel="dns-prefetch" href="https://translate.googleapis.com">
+<link rel="dns-prefetch" href="https://translate.google.com">
+
 </head>
 <body>
 
 <div data-include="partials/header.html"></div>
-
-<div class="flash-wrap" aria-live="polite" aria-atomic="true"></div>
 
 <main id="main">
   <section class="page-hero">
@@ -32,17 +35,15 @@
         <div class="card enroll-card enroll-card--form">
           <h2 class="card__title" data-i18n="enroll.student_title">Student information</h2>
 
-          <!-- ✅ Inline form message (handled by app.js) -->
-          
-
-          <!-- ✅ FormSubmit via app.js (no redirect) -->
-          <form class="form notranslate"
+          <form class="form"
                 id="enrollForm"
                 action="https://formsubmit.co/gyanvidyamandir9@gmail.com"
                 method="POST"
                 data-ajax="true">
-            
-                <div class="form-flash" data-form-flash aria-live="polite" aria-atomic="true"></div>
+
+            <!-- ✅ Inline form message (handled by app.js) -->
+            <div class="form-flash" data-form-flash aria-live="polite" aria-atomic="true"></div>
+
             <!-- FormSubmit config -->
             <input type="hidden" name="_subject" value="New Enrollment Inquiry – Gyan Vidya Mandir" />
             <input type="hidden" name="_captcha" value="false" />
@@ -63,23 +64,29 @@
             <label class="sr-only" for="grade" data-i18n="enroll.grade_label">Applying for</label>
             <select class="input" id="grade" name="grade" required>
               <option value="" selected disabled data-i18n="enroll.grade_ph">Applying for (Nursery to Grade 10)</option>
-              <option class="notranslate" value="Nursery">Nursery</option>
-              <option class="notranslate" value="KG 1">KG 1</option>
-              <option class="notranslate" value="KG 2">KG 2</option>
-              <option class="notranslate" value="Grade 1">Grade 1</option>
-              <option class="notranslate" value="Grade 2">Grade 2</option>
-              <option class="notranslate" value="Grade 3">Grade 3</option>
-              <option class="notranslate" value="Grade 4">Grade 4</option>
-              <option class="notranslate" value="Grade 5">Grade 5</option>
-              <option class="notranslate" value="Grade 6">Grade 6</option>
-              <option class="notranslate" value="Grade 7">Grade 7</option>
-              <option class="notranslate" value="Grade 8">Grade 8</option>
-              <option class="notranslate" value="Grade 9">Grade 9</option>
-              <option class="notranslate" value="Grade 10">Grade 10</option>
+
+              <!-- ✅ If you want these translated, add these keys in i18n -->
+              <option value="Nursery" data-i18n="enroll.grade_nursery">Nursery</option>
+              <option value="KG 1" data-i18n="enroll.grade_kg1">KG 1</option>
+              <option value="KG 2" data-i18n="enroll.grade_kg2">KG 2</option>
+              <option value="Grade 1" data-i18n="enroll.grade_1">Grade 1</option>
+              <option value="Grade 2" data-i18n="enroll.grade_2">Grade 2</option>
+              <option value="Grade 3" data-i18n="enroll.grade_3">Grade 3</option>
+              <option value="Grade 4" data-i18n="enroll.grade_4">Grade 4</option>
+              <option value="Grade 5" data-i18n="enroll.grade_5">Grade 5</option>
+              <option value="Grade 6" data-i18n="enroll.grade_6">Grade 6</option>
+              <option value="Grade 7" data-i18n="enroll.grade_7">Grade 7</option>
+              <option value="Grade 8" data-i18n="enroll.grade_8">Grade 8</option>
+              <option value="Grade 9" data-i18n="enroll.grade_9">Grade 9</option>
+              <option value="Grade 10" data-i18n="enroll.grade_10">Grade 10</option>
             </select>
 
             <label class="sr-only" for="dob" data-i18n="enroll.dob_label">Date of Birth</label>
-            <input class="input" id="dob" name="dob" type="date" required />
+            <input class="input"
+                   id="dob"
+                   name="dob"
+                   type="date"
+                   required />
 
             <label class="sr-only" for="prevSchool" data-i18n="enroll.prev_school_label">Previous School (optional)</label>
             <input class="input"
