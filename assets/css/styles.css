@@ -3646,3 +3646,530 @@ button.btn{
 .section--tight{
   padding: clamp(16px, 2.2vw, 28px) 0 !important;
 }
+
+/* =========================
+   HERO — MOBILE CAROUSEL FIX
+========================= */
+@media (max-width: 980px) {
+  .hero {
+    padding-top: 18px;      /* tighter */
+    padding-bottom: 24px;
+  }
+
+  /* Stack content + media */
+  .hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  /* Put carousel after content */
+  .hero__media {
+    order: 2;
+  }
+
+  /* Make carousel a clean responsive frame */
+  .carousel--hero {
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+
+    /* ✅ main fix: responsive height */
+    height: clamp(190px, 44vw, 270px);
+  }
+
+  /* Track must fill the frame */
+  .carousel--hero .carousel__track,
+  .carousel--hero .carousel__slide {
+    height: 100%;
+  }
+
+  /* If your slides are background-image based */
+  .carousel--hero .carousel__slide {
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Buttons: smaller + not blocking the image */
+  .carousel__btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.95;
+  }
+
+  /* Dots: closer and smaller */
+  .carousel__dots {
+    bottom: 10px;
+  }
+}
+
+/* Extra small phones: slightly shorter carousel */
+@media (max-width: 420px) {
+  .carousel--hero {
+    height: clamp(170px, 48vw, 230px);
+  }
+}
+
+/* =========================================
+   FIX CTA CUTTING (NO CAROUSEL CHANGE)
+========================================= */
+@media (max-height: 820px) and (min-width: 981px) {
+  .hero { padding: 21px 0 26px; }
+
+  .hero__title { line-height: 1.03; margin-bottom: 10px; }
+
+  .hero__sub {
+    margin: 8px 0 12px;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .keypoints { margin: 12px 0 14px; }
+  .hero__actions { margin-top: 10px; }
+}
+
+/* =========================================
+   MOBILE: REMOVE EMPTY SPACE UNDER CAROUSEL
+========================================= */
+@media (max-width: 980px) {
+
+  /* prevent the media column from stretching taller than its content */
+  .hero__grid { align-items: start; }
+
+  /* remove any forced height/min-height on the media wrapper */
+  .hero__media {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* ensure carousel wrapper doesn't create extra space */
+  .carousel--hero {
+    margin: 0 !important;
+  }
+
+  /* if your hero__media has a "card" background/gradient, keep it tight */
+  .hero__media::before,
+  .hero__media::after {
+    content: none !important;
+  }
+}
+
+/* ================================
+   MOBILE: SECTION TITLE FIT ONE LINE
+================================ */
+@media (max-width: 480px) {
+  .section__title {
+    font-size: clamp(25px, 5.2vw, 24px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    white-space: nowrap;     /* ✅ force single line */
+  }
+}
+
+/* ================================
+   MOBILE: SPACE BETWEEN CTA BUTTONS
+================================ */
+@media (max-width: 480px) {
+  .hero__actions,
+  .cta-strip__actions {
+    display: flex;
+    flex-direction: column;   /* stack buttons */
+    gap: 10px;                /* ✅ space between buttons */
+  }
+
+  .hero__actions .btn,
+  .cta-strip__actions .btn {
+    width: 100%;              /* clean full-width buttons */
+    text-align: center;
+  }
+}
+
+/* =========================================
+   MOBILE: CONSISTENT SPACING FOR ALL CTA GROUPS
+========================================= */
+@media (max-width: 480px) {
+
+  /* All your "button rows" */
+  .hero__actions,
+  .cta-strip__actions,
+  .band__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;               /* space between buttons */
+    align-items: stretch;
+  }
+
+  /* Make buttons full width on mobile */
+  .hero__actions .btn,
+  .cta-strip__actions .btn,
+  .band__actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Remove inline margin-right impact on mobile */
+  .hero__actions .btn[style],
+  .cta-strip__actions .btn[style],
+  .band__actions .btn[style] {
+    margin-right: 0 !important;
+  }
+}
+
+/* =================================================
+   MOBILE ONLY: FIT HERO CONTENT IN ONE SCREEN
+   (TEXT + SPACING ONLY — NO DESKTOP IMPACT)
+================================================= */
+@media (max-width: 480px) {
+
+  /* Reduce hero vertical padding */
+  .hero {
+    padding-top: 16px;
+    padding-bottom: 18px;
+  }
+
+  /* Eyebrow line */
+  .eyebrow {
+    font-size: 10px;
+    margin-bottom: 6px;
+    letter-spacing: .04em;
+  }
+
+  /* Main hero heading */
+  .hero__title {
+    font-size: clamp(26px, 7vw, 30px);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  /* Paragraph */
+  .hero__sub {
+    font-size: 14px;
+    line-height: 1.45;
+    margin-bottom: 12px;
+
+    /* Prevent it from pushing content too much */
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Key points box */
+  .keypoints {
+    margin: 10px 0 12px;
+    gap: 6px;
+  }
+
+  .keypoints span {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+
+  /* CTA buttons already stacked — tighten spacing */
+  .hero__actions {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .hero__actions .btn {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+}
+
+/* =========================================
+   MOBILE: PAGE / SECTION TITLE READABILITY
+========================================= */
+@media (max-width: 480px) {
+
+  /* Page-level titles like "About Gyan Vidya Mandir, Nagpur" */
+  .page-hero__title,
+  .section__title {
+    font-size: clamp(22px, 6vw, 26px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+
+    /* Better readability on phone */
+    text-align: left;        /* avoid awkward center wrapping */
+    text-wrap: balance;      /* modern browsers: balances lines */
+  }
+}
+
+/* =========================================
+   MOBILE: STACK + SPACE FOR ABOUT PAGE BUTTONS
+   (About.html uses .about-actions)
+========================================= */
+@media (max-width: 480px) {
+
+  .about-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    margin-top: 12px;
+  }
+
+  .about-actions .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cal__controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;  /* Prev | Next */
+    gap: 10px;
+    align-items: center;
+  }
+
+  .cal__range {
+    grid-column: 1 / -1;            /* range below */
+    text-align: center;
+    margin-top: 2px;
+  }
+
+  .cal__btn {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+}
+
+/* =========================================
+   MOBILE ONLY: CALENDAR CONTROLS FIX
+   (resources.html calendar)
+========================================= */
+@media (max-width: 480px) {
+
+  /* Give the whole calendar card a bit tighter padding */
+  .cal {
+    padding: 14px;
+  }
+
+  /* Legend pills wrap nicely */
+  .cal__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  /* Controls: stack + center, no weird spacing */
+  .cal__controls {
+    display: grid;
+    grid-template-columns: 1fr;   /* stack */
+    gap: 10px;
+    align-items: center;
+    justify-items: center;
+    margin-top: 6px;
+  }
+
+  /* Make Prev/Next buttons equal width */
+  .cal__btn {
+    width: 140px;                /* consistent size */
+    padding: 10px 12px;
+    font-size: 14px;
+    border-radius: 12px;
+  }
+
+  /* Range text centered and not too wide */
+  .cal__range {
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.2;
+    max-width: 24ch;
+  }
+}
+/* =================================================
+   MOBILE ONLY: FORCE CALENDAR CONTROLS LAYOUT
+   (Prev | Next on one row, Range below)
+================================================= */
+@media (max-width: 480px) {
+
+  .cal .cal__top { gap: 10px; }
+
+  /* Force legend wrap */
+  .cal .cal__legend {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  /* ✅ Force controls into grid */
+  .cal .cal__controls {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-template-areas:
+      "prev next"
+      "range range" !important;
+    gap: 10px !important;
+    align-items: center !important;
+    justify-items: stretch !important;
+    margin-top: 10px !important;
+  }
+
+  /* Map buttons to grid areas */
+  .cal .cal__controls [data-cal-prev] {
+    grid-area: prev !important;
+    justify-self: stretch !important;
+  }
+
+  .cal .cal__controls [data-cal-next] {
+    grid-area: next !important;
+    justify-self: stretch !important;
+  }
+
+  .cal .cal__controls .cal__range {
+    grid-area: range !important;
+    text-align: center !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+  }
+
+  /* Make buttons full-width and consistent */
+  .cal .cal__btn {
+    width: 100% !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+  }
+}
+/* =========================================
+   MOBILE: SHOW ONLY ONE MONTH IN CALENDAR
+========================================= */
+@media (max-width: 480px) {
+  /* Hide the 2nd month card/panel inside the calendar mount */
+  #academicCalendar > :nth-child(n+2) {
+    display: none !important;
+  }
+}
+@media (max-width: 480px) {
+  #academicCalendar {
+    overflow-x: hidden;
+  }
+}
+
+/* =========================================
+   MOBILE: CALENDAR FIT + TEXT SCALE
+========================================= */
+@media (max-width: 480px) {
+
+  /* tighten section spacing so calendar fits */
+  #calendar .card.cal {
+    padding: 12px;
+  }
+
+  /* title/subtitle in page hero */
+  .page-hero__title {
+    font-size: clamp(22px, 6vw, 26px);
+    line-height: 1.15;
+  }
+  .page-hero__sub {
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  /* legend pills wrap */
+  .cal__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* controls: compact */
+  .cal__range { font-size: 13px; }
+
+  .cal__btn {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+
+  /* calendar grid: allow horizontal scroll instead of squishing */
+  #academicCalendar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* if the calendar table/grid is wide, keep it readable */
+  #academicCalendar table,
+  #academicCalendar .cal-grid,
+  #academicCalendar .month {
+    min-width: 340px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cal__range { display: none !important; }
+}
+
+@media (max-width: 480px) {
+  .cal__controls{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* make buttons equal width (optional, looks clean) */
+  .cal__controls .cal__btn{
+    min-width: 120px;
+    text-align: center;
+  }
+}
+
+/* Phone: make Calendar section fill the screen so next section starts after scroll */
+@media (max-width: 480px) {
+  /* adjust 140px if your header/ticker is taller */
+  #calendar {
+    min-height: calc(100vh - 140px);
+    padding-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  #calendar .container {
+    width: 100%;
+  }
+
+  /* give the calendar card a little breathing room at bottom */
+  #calendar .cal {
+    margin-bottom: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+
+  /* Force calendar controls to center */
+  .cal__controls {
+    display: flex !important;
+    flex-direction: row;
+    justify-content: center !important;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Ensure buttons don't stretch unevenly */
+  .cal__controls .cal__btn {
+    flex: 0 0 auto;
+    min-width: 110px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+
+  /* Hide range text completely (already discussed, but keep here for safety) */
+  .cal__range {
+    display: none !important;
+  }
+}
